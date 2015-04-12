@@ -1,0 +1,53 @@
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class reverseIndex extends ((scala.collection.immutable.List[Tuple2StringListString])=>(scala.collection.immutable.HashMap[java.lang.String, Int])) {
+def apply(x0:scala.collection.immutable.List[Tuple2StringListString]): scala.collection.immutable.HashMap[java.lang.String, Int] = {
+var x2: scala.collection.immutable.List[Tuple2StringListString] = x0
+val x1 = collection.immutable.HashMap[java.lang.String,Int]()
+var x3: scala.collection.immutable.HashMap[java.lang.String, Int] = x1
+val x40 = while ({val x4 = x2
+val x5 = x4.isEmpty
+val x6 = !x5
+x6}) {
+val x8 = x3
+val x9 = x2
+val x10 = x9.head
+val x12 = x10._2
+var x13: scala.collection.immutable.List[java.lang.String] = x12
+var x14: scala.collection.immutable.HashMap[java.lang.String, Int] = x8
+val x34 = while ({val x15 = x13
+val x16 = x15.isEmpty
+val x17 = !x16
+x17}) {
+val x19 = x14
+val x20 = x13
+val x21 = x20.head
+val x24 = x19.contains(x21)
+val x29 = if (x24) {
+val x25 = x19(x21)
+val x26 = x25 + 1
+val x27 = x19.updated(x21, x26).asInstanceOf[collection.immutable.HashMap[java.lang.String,Int]]
+x27
+} else {
+val x28 = x19.updated(x21, 1).asInstanceOf[collection.immutable.HashMap[java.lang.String,Int]]
+x28
+}
+x14 = x29
+val x31 = x20.tail
+x13 = x31
+()
+}
+val x35 = x14
+x3 = x35
+val x37 = x9.tail
+x2 = x37
+()
+}
+val x41 = x3
+x41
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/

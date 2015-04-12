@@ -1,0 +1,338 @@
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class partitionmapRange extends ((Int, Int)=>(Tuple2ListIntListInt)) {
+def apply(x0:Int, x1:Int): Tuple2ListIntListInt = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x20 = while ({val x5 = x3
+val x6 = x5 <= x1
+x6}) {
+val x8 = x4
+val x9 = x3
+val x10 = x9 % 2
+val x11 = x10 == 0
+val x15 = if (x11) {
+val x12 = x9 * 2
+val x13 = List(x12)
+val x14 = x8 ::: x13
+x14
+} else {
+x8
+}
+x4 = x15
+val x17 = x9 + 1
+x3 = x17
+()
+}
+val x21 = x4
+var x22: Int = x0
+var x23: scala.collection.immutable.List[Int] = x2
+val x40 = while ({val x24 = x22
+val x25 = x24 <= x1
+x25}) {
+val x27 = x23
+val x28 = x22
+val x29 = x28 % 2
+val x30 = x29 == 0
+val x35 = if (x30) {
+x27
+} else {
+val x32 = x28 * 3
+val x33 = List(x32)
+val x34 = x27 ::: x33
+x34
+}
+x23 = x35
+val x37 = x28 + 1
+x22 = x37
+()
+}
+val x41 = x23
+val x42 = new Tuple2ListIntListInt(x21,x41)
+x42
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+
+case class Tuple2ListIntListInt(_1: scala.collection.immutable.List[Int], _2: scala.collection.immutable.List[Int])
+compilation: ok
+Tuple2ListIntListInt(List(4, 8, 12, 16, 20),List(3, 9, 15, 21, 27))
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class multifoldleftRange extends ((Int, Int)=>(Tuple2ListIntListInt)) {
+def apply(x0:Int, x1:Int): Tuple2ListIntListInt = {
+var x4: Int = x0
+val x2 = List()
+val x3 = new Tuple2ListIntListInt(x2,x2)
+var x5: Tuple2ListIntListInt = x3
+val x25 = while ({val x6 = x4
+val x7 = x6 <= x1
+x7}) {
+val x9 = x5
+val x10 = x4
+val x11 = x10 % 2
+val x12 = x11 == 0
+val x20 = if (x12) {
+val x14 = x9._2
+val x13 = x9._1
+val x15 = List(x10)
+val x16 = x13 ::: x15
+val x17 = new Tuple2ListIntListInt(x16,x14)
+x17
+} else {
+val x13 = x9._1
+val x14 = x9._2
+val x15 = List(x10)
+val x18 = x14 ::: x15
+val x19 = new Tuple2ListIntListInt(x13,x18)
+x19
+}
+x5 = x20
+val x22 = x10 + 1
+x4 = x22
+()
+}
+val x26 = x5
+x26
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+Tuple2ListIntListInt(List(2, 4, 6, 8, 10),List(1, 3, 5, 7, 9))
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class partitionbis extends ((Int, Int)=>(scala.collection.immutable.List[EitherIntInt])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[EitherIntInt] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[EitherIntInt] = x2
+val x12 = null.asInstanceOf[Int]
+val x24 = while ({val x5 = x3
+val x6 = x5 <= x1
+x6}) {
+val x8 = x4
+val x9 = x3
+val x10 = x9 % 2
+val x11 = x10 == 0
+val x19 = if (x11) {
+val x13 = new EitherIntInt(x9,x12,true)
+val x14 = List(x13)
+val x15 = x8 ::: x14
+x15
+} else {
+val x16 = new EitherIntInt(x12,x9,false)
+val x17 = List(x16)
+val x18 = x8 ::: x17
+x18
+}
+x4 = x19
+val x21 = x9 + 1
+x3 = x21
+()
+}
+val x25 = x4
+x25
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(EitherIntInt(0,1,false), EitherIntInt(2,0,true), EitherIntInt(0,3,false), EitherIntInt(4,0,true), EitherIntInt(0,5,false), EitherIntInt(6,0,true), EitherIntInt(0,7,false), EitherIntInt(8,0,true), EitherIntInt(0,9,false), EitherIntInt(10,0,true))
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class partitionbismap extends ((Int, Int)=>(scala.collection.immutable.List[EitherIntInt])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[EitherIntInt] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[EitherIntInt] = x2
+val x12 = null.asInstanceOf[Int]
+val x28 = while ({val x5 = x3
+val x6 = x5 <= x1
+x6}) {
+val x8 = x4
+val x9 = x3
+val x10 = x9 % 2
+val x11 = x10 == 0
+val x23 = if (x11) {
+val x14 = x9 * 2
+val x15 = new EitherIntInt(x14,x12,true)
+val x16 = List(x15)
+val x17 = x8 ::: x16
+x17
+} else {
+val x19 = x9 * 3
+val x20 = new EitherIntInt(x12,x19,false)
+val x21 = List(x20)
+val x22 = x8 ::: x21
+x22
+}
+x4 = x23
+val x25 = x9 + 1
+x3 = x25
+()
+}
+val x29 = x4
+x29
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(EitherIntInt(0,3,false), EitherIntInt(4,0,true), EitherIntInt(0,9,false), EitherIntInt(8,0,true), EitherIntInt(0,15,false), EitherIntInt(12,0,true), EitherIntInt(0,21,false), EitherIntInt(16,0,true), EitherIntInt(0,27,false), EitherIntInt(20,0,true))
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class partitionbismap2listpair extends ((Int, Int)=>(Tuple2ListIntListInt)) {
+def apply(x0:Int, x1:Int): Tuple2ListIntListInt = {
+var x4: Int = x0
+val x2 = List()
+val x3 = new Tuple2ListIntListInt(x2,x2)
+var x5: Tuple2ListIntListInt = x3
+val x33 = while ({val x6 = x4
+val x7 = x6 <= x1
+x7}) {
+val x9 = x5
+val x10 = x4
+val x11 = x10 % 2
+val x12 = x11 == 0
+val x28 = if (x12) {
+val x18 = x9._2
+val x17 = x9._1
+val x15 = x10 * 2
+val x19 = List(x15)
+val x20 = x17 ::: x19
+val x21 = new Tuple2ListIntListInt(x20,x18)
+x21
+} else {
+val x17 = x9._1
+val x18 = x9._2
+val x23 = x10 * 3
+val x25 = List(x23)
+val x26 = x18 ::: x25
+val x27 = new Tuple2ListIntListInt(x17,x26)
+x27
+}
+x5 = x28
+val x30 = x10 + 1
+x4 = x30
+()
+}
+val x34 = x5
+x34
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+Tuple2ListIntListInt(List(4, 8, 12, 16, 20),List(3, 9, 15, 21, 27))
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class groupwithsum extends ((Int, Int)=>(scala.collection.immutable.HashMap[Int, Int])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.HashMap[Int, Int] = {
+var x3: Int = x0
+val x2 = collection.immutable.HashMap[Int,Int]()
+var x4: scala.collection.immutable.HashMap[Int, Int] = x2
+val x22 = while ({val x5 = x3
+val x6 = x5 <= x1
+x6}) {
+val x8 = x4
+val x9 = x3
+val x10 = x9 % 3
+val x12 = x8.contains(x10)
+val x17 = if (x12) {
+val x13 = x8(x10)
+val x14 = x13 + x9
+val x15 = x8.updated(x10, x14).asInstanceOf[collection.immutable.HashMap[Int,Int]]
+x15
+} else {
+val x16 = x8.updated(x10, x9).asInstanceOf[collection.immutable.HashMap[Int,Int]]
+x16
+}
+x4 = x17
+val x19 = x9 + 1
+x3 = x19
+()
+}
+val x23 = x4
+x23
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+Map(0 -> 18, 1 -> 22, 2 -> 15)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class partitioncpsmap2listpair extends ((Int, Int)=>(Tuple2ListIntListInt)) {
+def apply(x0:Int, x1:Int): Tuple2ListIntListInt = {
+var x4: Int = x0
+val x2 = List()
+val x3 = new Tuple2ListIntListInt(x2,x2)
+var x5: Tuple2ListIntListInt = x3
+val x46 = while ({val x6 = x4
+val x7 = x6 <= x1
+x7}) {
+val x9 = x5
+val x10 = x4
+var x15: Int = 0
+var x16: Int = 0
+var x17: Boolean = true
+val x11 = x10 % 2
+val x12 = x11 == 0
+val x23 = if (x12) {
+x15 = x10
+()
+} else {
+x16 = x10
+x17 = false
+()
+}
+val x26 = x17
+val x41 = if (x26) {
+val x27 = x15
+val x30 = x9._2
+val x29 = x9._1
+val x28 = x27 * 2
+val x31 = List(x28)
+val x32 = x29 ::: x31
+val x33 = new Tuple2ListIntListInt(x32,x30)
+x33
+} else {
+val x35 = x16
+val x29 = x9._1
+val x30 = x9._2
+val x36 = x35 * 3
+val x37 = List(x36)
+val x38 = x30 ::: x37
+val x39 = new Tuple2ListIntListInt(x29,x38)
+x39
+}
+x5 = x41
+val x43 = x10 + 1
+x4 = x43
+()
+}
+val x47 = x5
+x47
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+Tuple2ListIntListInt(List(4, 8, 12, 16, 20),List(3, 9, 15, 21, 27))
