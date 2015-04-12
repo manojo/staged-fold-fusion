@@ -10,13 +10,16 @@ Important Files
 
 The main files for this project are
 
-  1. [FoldLeft.scala](...): This file contains the implementation of the staged
-  `FoldLeft` API.
-  2. [FoldLeftSuite.scala](...): This file contains test cases for `FoldLeft`.
-  These tests generate code, and also compile the generated code and run them
-  on dynamic output. The tests programs are defined in the `FoldLeftProg` trait.
+  1. [FoldLeft.scala](https://github.com/manojo/staged-fold-fusion/blob/master/src/main/scala/barbedwire/FoldLeft.scala):
+  This file contains the implementation of the staged `FoldLeft` API.
+  2. [FoldLeftSuite.scala](https://github.com/manojo/staged-fold-fusion/blob/master/src/test/scala/barbedwire/FoldLeftSuite.scala):
+  This file contains test cases for `FoldLeft`. These tests generate code, and also
+  compile the generated code and run them on dynamic output. The tests programs
+  are defined in the `FoldLeftProg` trait.
   Their generation and execution is done in the `FoldLeftSuite` class.
-  3. [foldleft.check](...), [partition.check](...), [reverse-index.check](...).
+  3. [foldleft.check](https://github.com/manojo/staged-fold-fusion/blob/master/test-out/foldleft.check),
+  [partition.check](https://github.com/manojo/staged-fold-fusion/blob/master/test-out/partition.check),
+  [reverse-index.check](https://github.com/manojo/staged-fold-fusion/blob/master/test-out/reverse-index.check).
   They contain the generated code for the test cases, along with printed output
   which is the result of running a specific input.
 
