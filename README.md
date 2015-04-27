@@ -5,6 +5,10 @@ This repo contains an implementation of fold-based fusion using partial evaluati
 The code uses [LMS](http://scala-lms.github.io), or Lightweight
 Modular Staging.
 
+Update (27 april 2015): The Scala version has just been bumped. If you have
+downloaded this project before this date, and are updating, make sure you do the
+same for the LMS dependency as well (i.e. publish-local the latest version).
+
 Important Files
 ===============
 
