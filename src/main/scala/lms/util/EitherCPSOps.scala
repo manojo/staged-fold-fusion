@@ -63,16 +63,17 @@ trait EitherCPSOps extends Base with IfThenElse with BooleanOps with LiftVariabl
     ): EitherCPS[A, B] = {
       import lms.ZeroVal
 
-      var l = ZeroVal[A]; var r = ZeroVal[B]
-      var isLeft = true
-      val lCont = (a: Rep[A]) => { l = a; isLeft = true }
-      val rCont = (b: Rep[B]) => { r = b; isLeft = false }
-
-      if (cond) thenp.apply[Unit](lCont, rCont)
-      else elsep.apply[Unit](lCont, rCont)
-
       new EitherCPS[A, B] {
         def apply[X: Manifest](lf: Rep[A] => Rep[X], rf: Rep[B] => Rep[X]) = {
+
+          var l = ZeroVal[A]; var r = ZeroVal[B]
+          var isLeft = true
+          val lCont = (a: Rep[A]) => { l = a; isLeft = true }
+          val rCont = (b: Rep[B]) => { r = b; isLeft = false }
+
+          if (cond) thenp.apply[Unit](lCont, rCont)
+          else elsep.apply[Unit](lCont, rCont)
+
           if (isLeft) lf(l) else rf(r)
         }
       }

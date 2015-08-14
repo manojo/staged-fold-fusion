@@ -3,7 +3,9 @@ Staged Fold Fusion
 
 This repo contains an implementation of fold-based fusion using partial evaluation.
 The code uses [LMS](http://scala-lms.github.io), or Lightweight
-Modular Staging.
+Modular Staging. You may wish to read the [Scala '15](http://lampwww.epfl.ch/~hmiller/scala2015/)
+publication of this work [here](http://infoscience.epfl.ch/record/209021/files/p41-jonnalagedda.pdf).
+You can also take a look at slides [here](http://lampwww.epfl.ch/~hmiller/scala2015/slides/fold_based_fusion.pdf).
 
 Update (27 april 2015): The Scala version has just been bumped. If you have
 downloaded this project before this date, and are updating, make sure you do the
