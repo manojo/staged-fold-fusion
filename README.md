@@ -11,6 +11,8 @@ Update (27 april 2015): The Scala version has just been bumped. If you have
 downloaded this project before this date, and are updating, make sure you do the
 same for the LMS dependency as well (i.e. publish-local the latest version).
 
+Update (7 september 2015): You no longer need to publish-local!
+
 Important Files
 ===============
 
@@ -45,3 +47,20 @@ To run the code, please follow these steps:
   ```
 
 Hope you have fun!
+
+
+LMS Coding conventions
+======================
+
+Here are some basic LMS conventions I use when writing LMS code:
+
+  * Each new `Ops` gets its own file
+  * An `Exp` trait only mixes other Exp traits that are not `Opt` trait
+  * `Opt` traits are mixed in at a later stage. If you are often going to
+    use one, create an `Opt` trait for your `Ops` which mixes the relevant
+    `Opt` traits. `Fat` optimizations should not be mixed in with the classical
+    `Opt` traits, but used independently.
+  * If I use a certain feature (ex Option) in my current trait, I mix it in
+    explicitly, even if some other trait I'm using has it already. Serves for
+    documentation purposes. Of course, for really trivial stuff it's not necessary
+    to do so.

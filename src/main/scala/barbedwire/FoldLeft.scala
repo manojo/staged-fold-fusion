@@ -1,6 +1,6 @@
 package barbedwire
 
-import scala.virtualization.lms.common._
+import scala.lms.common._
 import lms._
 import lms.util._
 
@@ -27,8 +27,8 @@ trait FoldLefts
     with LiftVariables
     with While
     with EitherOps
-    with MyTupleOps
-    with EitherCPSOps {
+    with TupleOps
+    with EitherCPS {
 
   /**
    * a type alias for the combination function for
@@ -41,15 +41,15 @@ trait FoldLefts
   /**
    * foldLeft is basically a pair of a zero value and a combination function
    */
-  abstract class FoldLeft[A: Manifest] { self =>
+  abstract class FoldLeft[A: Typ] { self =>
 
-    def apply[S: Manifest](z: Rep[S], comb: Comb[A, S]): Rep[S]
+    def apply[S: Typ](z: Rep[S], comb: Comb[A, S]): Rep[S]
 
     /**
      * map
      */
-    def map[B: Manifest](f: Rep[A] => Rep[B]) = new FoldLeft[B] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[B, S]) = self.apply(
+    def map[B: Typ](f: Rep[A] => Rep[B]) = new FoldLeft[B] {
+      def apply[S: Typ](z: Rep[S], comb: Comb[B, S]) = self.apply(
           z,
           (acc: Rep[S], elem: Rep[A]) => comb(acc, f(elem))
         )
@@ -59,7 +59,7 @@ trait FoldLefts
      * filter
      */
     def filter(p: Rep[A] => Rep[Boolean]) = new FoldLeft[A] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[A, S]) = self.apply(
+      def apply[S: Typ](z: Rep[S], comb: Comb[A, S]) = self.apply(
           z,
           (acc: Rep[S], elem: Rep[A]) => if (p(elem)) comb(acc, elem) else acc
         )
@@ -68,8 +68,8 @@ trait FoldLefts
     /**
      * flatMap
      */
-    def flatMap[B: Manifest](f: Rep[A] => FoldLeft[B]) = new FoldLeft[B] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[B, S]) = self.apply(
+    def flatMap[B: Typ](f: Rep[A] => FoldLeft[B]) = new FoldLeft[B] {
+      def apply[S: Typ](z: Rep[S], comb: Comb[B, S]) = self.apply(
           z,
           (acc: Rep[S], elem: Rep[A]) => {
             val nestedFld = f(elem)
@@ -82,7 +82,7 @@ trait FoldLefts
      * concat
      */
     def concat(that: FoldLeft[A]) = new FoldLeft[A] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[A, S]) = {
+      def apply[S: Typ](z: Rep[S], comb: Comb[A, S]) = {
         val folded: Rep[S] = self.apply(z, comb)
         that.apply(folded, comb)
       }
@@ -94,7 +94,7 @@ trait FoldLefts
      * append
      */
     def append(elem: Rep[A]) = new FoldLeft[A] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[A, S]) = {
+      def apply[S: Typ](z: Rep[S], comb: Comb[A, S]) = {
         val folded: Rep[S] = self.apply(z, comb)
         comb(folded, elem)
       }
@@ -123,7 +123,7 @@ trait FoldLefts
      * see the following related post: http://manojo.github.io/2015/03/12/staged-foldleft-groupby/
      */
     def partitionBis(p: Rep[A] => Rep[Boolean]) = new FoldLeft[Either[A, A]] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[Either[A, A], S]) = self.apply(
+      def apply[S: Typ](z: Rep[S], comb: Comb[Either[A, A], S]) = self.apply(
           z,
           (acc: Rep[S], elem: Rep[A]) =>
             if (p(elem)) comb(acc, left[A, A](elem))
@@ -154,7 +154,7 @@ trait FoldLefts
      * can be rewritten using `map`.
      * see the following related post: http://manojo.github.io/2015/03/12/staged-foldleft-groupby/
      */
-    def groupWith[K: Manifest](f: Rep[A] => Rep[K]): FoldLeft[(K, A)] =
+    def groupWith[K: Typ](f: Rep[A] => Rep[K]): FoldLeft[(K, A)] =
       this map (elem => make_tuple2(f(elem), elem))
 
   }
@@ -168,8 +168,8 @@ trait FoldLefts
     /**
      * create a fold from list
      */
-    def fromList[A: Manifest](ls: Rep[List[A]]) = new FoldLeft[A] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[A, S]): Rep[S] = {
+    def fromList[A: Typ](ls: Rep[List[A]]) = new FoldLeft[A] {
+      def apply[S: Typ](z: Rep[S], comb: Comb[A, S]): Rep[S] = {
         var tmpList = ls
         var tmp = z
 
@@ -186,7 +186,7 @@ trait FoldLefts
      * create a fold from a range
      */
     def fromRange(a: Rep[Int], b: Rep[Int]) = new FoldLeft[Int] {
-      def apply[S: Manifest](z: Rep[S], comb: Comb[Int, S]) = {
+      def apply[S: Typ](z: Rep[S], comb: Comb[Int, S]) = {
         var tmpInt = a
         var tmp = z
 

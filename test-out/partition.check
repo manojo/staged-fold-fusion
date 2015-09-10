@@ -114,32 +114,31 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[EitherIntInt] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[EitherIntInt] = x2
-val x12 = null.asInstanceOf[Int]
-val x24 = while ({val x5 = x3
+val x23 = while ({val x5 = x3
 val x6 = x5 <= x1
 x6}) {
 val x8 = x4
 val x9 = x3
 val x10 = x9 % 2
 val x11 = x10 == 0
-val x19 = if (x11) {
-val x13 = new EitherIntInt(x9,x12,true)
-val x14 = List(x13)
-val x15 = x8 ::: x14
-x15
+val x18 = if (x11) {
+val x12 = new EitherIntInt(x9,0,true)
+val x13 = List(x12)
+val x14 = x8 ::: x13
+x14
 } else {
-val x16 = new EitherIntInt(x12,x9,false)
-val x17 = List(x16)
-val x18 = x8 ::: x17
-x18
+val x15 = new EitherIntInt(0,x9,false)
+val x16 = List(x15)
+val x17 = x8 ::: x16
+x17
 }
-x4 = x19
-val x21 = x9 + 1
-x3 = x21
+x4 = x18
+val x20 = x9 + 1
+x3 = x20
 ()
 }
-val x25 = x4
-x25
+val x24 = x4
+x24
 }
 }
 /*****************************************
@@ -155,34 +154,33 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[EitherIntInt] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[EitherIntInt] = x2
-val x12 = null.asInstanceOf[Int]
-val x28 = while ({val x5 = x3
+val x27 = while ({val x5 = x3
 val x6 = x5 <= x1
 x6}) {
 val x8 = x4
 val x9 = x3
 val x10 = x9 % 2
 val x11 = x10 == 0
-val x23 = if (x11) {
-val x14 = x9 * 2
-val x15 = new EitherIntInt(x14,x12,true)
-val x16 = List(x15)
-val x17 = x8 ::: x16
-x17
+val x22 = if (x11) {
+val x13 = x9 * 2
+val x14 = new EitherIntInt(x13,0,true)
+val x15 = List(x14)
+val x16 = x8 ::: x15
+x16
 } else {
-val x19 = x9 * 3
-val x20 = new EitherIntInt(x12,x19,false)
-val x21 = List(x20)
-val x22 = x8 ::: x21
-x22
+val x18 = x9 * 3
+val x19 = new EitherIntInt(0,x18,false)
+val x20 = List(x19)
+val x21 = x8 ::: x20
+x21
 }
-x4 = x23
-val x25 = x9 + 1
-x3 = x25
+x4 = x22
+val x24 = x9 + 1
+x3 = x24
 ()
 }
-val x29 = x4
-x29
+val x28 = x4
+x28
 }
 }
 /*****************************************
@@ -199,37 +197,37 @@ var x4: Int = x0
 val x2 = List()
 val x3 = new Tuple2ListIntListInt(x2,x2)
 var x5: Tuple2ListIntListInt = x3
-val x33 = while ({val x6 = x4
+val x32 = while ({val x6 = x4
 val x7 = x6 <= x1
 x7}) {
 val x9 = x5
 val x10 = x4
 val x11 = x10 % 2
 val x12 = x11 == 0
-val x28 = if (x12) {
-val x18 = x9._2
-val x17 = x9._1
-val x15 = x10 * 2
-val x19 = List(x15)
-val x20 = x17 ::: x19
-val x21 = new Tuple2ListIntListInt(x20,x18)
-x21
+val x27 = if (x12) {
+val x17 = x9._2
+val x16 = x9._1
+val x14 = x10 * 2
+val x18 = List(x14)
+val x19 = x16 ::: x18
+val x20 = new Tuple2ListIntListInt(x19,x17)
+x20
 } else {
-val x17 = x9._1
-val x18 = x9._2
-val x23 = x10 * 3
-val x25 = List(x23)
-val x26 = x18 ::: x25
-val x27 = new Tuple2ListIntListInt(x17,x26)
-x27
+val x16 = x9._1
+val x17 = x9._2
+val x22 = x10 * 3
+val x24 = List(x22)
+val x25 = x17 ::: x24
+val x26 = new Tuple2ListIntListInt(x16,x25)
+x26
 }
-x5 = x28
-val x30 = x10 + 1
-x4 = x30
+x5 = x27
+val x29 = x10 + 1
+x4 = x29
 ()
 }
-val x34 = x5
-x34
+val x33 = x5
+x33
 }
 }
 /*****************************************
@@ -289,22 +287,22 @@ val x7 = x6 <= x1
 x7}) {
 val x9 = x5
 val x10 = x4
-var x15: Int = 0
-var x16: Int = 0
-var x17: Boolean = true
+var x17: Int = 0
+var x18: Int = 0
+var x19: Boolean = true
 val x11 = x10 % 2
 val x12 = x11 == 0
-val x23 = if (x12) {
-x15 = x10
+val x25 = if (x12) {
+x17 = x10
 ()
 } else {
-x16 = x10
-x17 = false
+x18 = x10
+x19 = false
 ()
 }
-val x26 = x17
+val x26 = x19
 val x41 = if (x26) {
-val x27 = x15
+val x27 = x17
 val x30 = x9._2
 val x29 = x9._1
 val x28 = x27 * 2
@@ -313,7 +311,7 @@ val x32 = x29 ::: x31
 val x33 = new Tuple2ListIntListInt(x32,x30)
 x33
 } else {
-val x35 = x16
+val x35 = x18
 val x29 = x9._1
 val x30 = x9._2
 val x36 = x35 * 3

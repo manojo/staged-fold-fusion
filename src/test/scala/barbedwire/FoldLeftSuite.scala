@@ -1,9 +1,10 @@
 package barbedwire
 
-import scala.virtualization.lms.common._
-import scala.virtualization.lms.internal.Effects
+import scala.lms.common._
+import scala.lms.internal.Effects
 import lms._
 import lms.util._
+import lms.testutil.FileDiffSpec
 
 //only importing this to access the type
 import scala.collection.immutable.HashMap
@@ -16,7 +17,11 @@ import java.io.FileOutputStream
  * Basic test suite for foldleft
  */
 
-trait FoldLeftProg extends FoldLefts with Equal with MyHashMapOps with StringOps {
+trait FoldLeftProg
+    extends FoldLefts
+    with Equal
+    with MyHashMapOps
+    with StringOps {
 
   /**
    * simple foldLeft back into a list
@@ -297,7 +302,7 @@ trait FoldLeftExp
   with EqualExpOpt
   with EitherOpsExp
   with MyHashMapOpsExp
-  with EitherCPSOpsExp
+  with EitherCPSExp
 
 trait FoldLeftGen
   extends ScalaGenListOps
@@ -314,15 +319,20 @@ trait FoldLeftGen
   val IR: FoldLeftExp
 }
 
-class FoldLeftSuite extends FileDiffSuite {
+class FoldLeftSuite extends FileDiffSpec {
 
   val prefix = "test-out/"
 
-  def testFoldLeft = {
+  def `main API  generate code with no diff` = {
     withOutFile(prefix + "foldleft") {
-      new FoldLeftProg with FoldLeftExp with MyTupleOpsExp with MyScalaCompile { self =>
+      new FoldLeftProg
+          with FoldLeftExp
+          with TupleOpsExp
+          /** this trait should be mixed in higher up */ with ArrayOpsExp
+          /** this trait should be mixed in higher up */ with SeqOpsExp
+          with MyScalaCompile { self =>
 
-        val codegen = new FoldLeftGen with ScalaGenMyTupleOps { val IR: self.type = self }
+        val codegen = new FoldLeftGen with ScalaGenTupleOps { val IR: self.type = self }
 
         codegen.emitSource(foldLeftId _, "foldLeftId", new java.io.PrintWriter(System.out))
         codegen.reset
@@ -413,11 +423,16 @@ class FoldLeftSuite extends FileDiffSuite {
     assertFileEqualsCheck(prefix + "foldleft")
   }
 
-  def testPartition = {
+  def `Partition generate code with no diff` = {
     withOutFile(prefix + "partition") {
-      new FoldLeftProg with FoldLeftExp with MyTupleOpsExp with MyScalaCompile { self =>
+      new FoldLeftProg
+          with FoldLeftExp
+          with TupleOpsExp
+          /** this trait should be mixed in higher up */ with ArrayOpsExp
+          /** this trait should be mixed in higher up */ with SeqOpsExp
+          with MyScalaCompile { self =>
 
-        val codegen = new FoldLeftGen with ScalaGenMyTupleOps { val IR: self.type = self }
+        val codegen = new FoldLeftGen with ScalaGenTupleOps { val IR: self.type = self }
 
         codegen.emitSource2(partitionmapRange _, "partitionmapRange", new java.io.PrintWriter(System.out))
         codegen.emitDataStructures(new java.io.PrintWriter(System.out))
@@ -475,16 +490,18 @@ class FoldLeftSuite extends FileDiffSuite {
     assertFileEqualsCheck(prefix + "partition")
   }
 
-  def testReverseIndex = {
+  def `reverse index generate code with no diff` = {
     withOutFile(prefix + "reverse-index") {
       new FoldLeftProg
       with FoldLeftExp
-      with MyTupleOpsExp
+      with TupleOpsExp
       with StringOpsExp
+      /** this trait should be mixed in higher up */ with ArrayOpsExp
+      /** this trait should be mixed in higher up */ with SeqOpsExp
       with MyScalaCompile { self =>
 
         val codegen = new FoldLeftGen
-                      with ScalaGenMyTupleOps
+                      with ScalaGenTupleOps
                       with ScalaGenStringOps { val IR: self.type = self }
 
         codegen.emitSource(reverseIndex _, "reverseIndex", new java.io.PrintWriter(System.out))
