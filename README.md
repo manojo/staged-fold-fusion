@@ -13,6 +13,8 @@ same for the LMS dependency as well (i.e. publish-local the latest version).
 
 Update (7 september 2015): You no longer need to publish-local!
 
+Update (11 september 2015): You can now re-use this code in a sane manner
+
 Important Files
 ===============
 
@@ -35,11 +37,9 @@ Running the code
 ================
 To run the code, please follow these steps:
 
-  1. Clone the lms repo: `git clone git@github.com:TiarkRompf/virtualization-lms-core.git lms`.
-  2. Make sure you are on the `develop` branch: `cd lms; git checkout develop`.
-  3. Publish locally: `sbt "publish-local"`.
-  4. Clone this here repo in a separate folder: `git clone git@github.com:manojo/staged-fold-fusion.git`.
-  5. Profit:
+  1. Clone this here repo in a separate folder: `git clone git@github.com:manojo/staged-fold-fusion.git`.
+  2. ???
+  3. Profit:
   ```
     $ cd staged-fold-fusion
     $ sbt
@@ -48,6 +48,14 @@ To run the code, please follow these steps:
 
 Hope you have fun!
 
+Using the code in your project
+==============================
+
+This repo has been snapshot on Sonatype. Add the following lines to your
+`sbt` build to start using:
+
+    libraryDependencies += "com.github.manojo" % "staged-fold-fusion" % "0.1-SNAPSHOT"
+    resolvers += Resolver.sonatypeRepo("snapshots")
 
 LMS Coding conventions
 ======================
@@ -64,3 +72,4 @@ Here are some basic LMS conventions I use when writing LMS code:
     explicitly, even if some other trait I'm using has it already. Serves for
     documentation purposes. Of course, for really trivial stuff it's not necessary
     to do so.
+
