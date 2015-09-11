@@ -56,7 +56,8 @@ Using the code in your project
 This repo has been snapshot on Sonatype. Add the following lines to your
 `sbt` build to start using:
 
-    libraryDependencies += "com.github.manojo" % "staged-fold-fusion" % "0.1-SNAPSHOT"
+    libraryDependencies += "com.github.manojo" % "staged-fold-fusion
+    _2.11" % "0.1-SNAPSHOT"
     resolvers += Resolver.sonatypeRepo("snapshots")
 
 LMS Coding conventions
