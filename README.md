@@ -1,6 +1,8 @@
 Staged Fold Fusion
 ==================
 
+[![Build Status](https://travis-ci.org/manojo/staged-fold-fusion.svg?branch=master)](https://travis-ci.org/manojo/staged-fold-fusion)
+
 This repo contains an implementation of fold-based fusion using partial evaluation.
 The code uses [LMS](http://scala-lms.github.io), or Lightweight
 Modular Staging. You may wish to read the [Scala '15](http://lampwww.epfl.ch/~hmiller/scala2015/)
