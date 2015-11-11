@@ -57,11 +57,37 @@ trait UnfoldProg
    * map map over a range
    */
   def mapmapRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
-    val xs = FoldLeft.fromRange(a, b)
+    val xs = rangeIterator(a, b)
     val mapped = xs map (_ * unit(2))
-    (mapped map (_ + unit(1))).apply[List[Int]](
+    (mapped map (_ + unit(1))).toFold.apply[List[Int]](
       List[Int](),
       (ls, x) => ls ++ List(x)
+    )
+  }
+
+  /**
+   * filter over a range
+   */
+  def filterRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeIterator(a, b)
+    val filtered = xs filter (_ % unit(2) == unit(1))
+    filtered.toFold.apply[List[Int]](List[Int](), (ls, x) =>
+      if (x.isDefined) ls ++ List(x.get)
+      else ls
+    )
+  }
+
+  /**
+   * filter map over a range
+   */
+  def filtermapRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeIterator(a, b)
+    val filterMapped = xs.filter(_ % unit(2) == unit(1)).map(x =>
+      if (x.isDefined) Some(x.get * unit(3)) else none[Int]()
+    )
+    filterMapped.toFold.apply[List[Int]](List[Int](), (ls, x) =>
+      if (x.isDefined) ls ++ List(x.get)
+      else ls
     )
   }
 }
@@ -74,10 +100,12 @@ trait UnfoldExp
   extends FoldLeftExp
   with EqualExpOpt
   with StringOpsExp
+  with OptionOpsExp
 
 trait UnfoldGen
   extends FoldLeftGen
-  with ScalaGenEqual {
+  with ScalaGenEqual
+  with ScalaGenOptionOps {
   val IR: UnfoldExp
 }
 
@@ -122,6 +150,20 @@ class UnfoldSuite extends FileDiffSpec {
 
         val testcMapmapRange = compile2(mapmapRange)
         scala.Console.println(testcMapmapRange(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(filterRange _, "filterRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFilterRange = compile2(filterRange)
+        scala.Console.println(testcFilterRange(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(filtermapRange _, "filtermapRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFiltermapRange = compile2(filtermapRange)
+        scala.Console.println(testcFiltermapRange(1, 5))
         codegen.reset
 
       }

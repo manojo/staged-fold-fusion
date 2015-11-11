@@ -7,7 +7,9 @@ import lms.util._
 /**
  * Let's try to partially evaluate Iterators, or Unfolds
  */
-trait Unfolds { this: FoldLefts =>
+trait Unfolds
+    extends FoldLefts
+    with OptionOps {
 
 
   abstract class Iterator[A: Typ] { self =>
@@ -33,7 +35,6 @@ trait Unfolds { this: FoldLefts =>
         }
 
         tmpSink
-
       }
     }
 
@@ -49,7 +50,21 @@ trait Unfolds { this: FoldLefts =>
         val mapped = f(nextAndRest._1)
         make_tuple2(mapped, nextAndRest._2)
       }
+    }
 
+    /**
+     * A modified filter, pumps out options
+     */
+    def filter(p: Rep[A] => Rep[Boolean]) = new Iterator[Option[A]] {
+      type Source = self.Source
+      implicit def sourceTyp = self.sourceTyp
+
+      def source = self.source
+      def atEnd(s: Rep[Source]): Rep[Boolean] = self.atEnd(s)
+      def next(s: Rep[Source]): Rep[(Option[A], Source)] = {
+        val nextAndRest = self.next(s)
+        make_tuple2(if (p(nextAndRest._1)) Some(nextAndRest._1) else none[A](), nextAndRest._2)
+      }
     }
   }
 
