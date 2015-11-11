@@ -50,9 +50,9 @@ trait FoldLefts
      */
     def map[B: Typ](f: Rep[A] => Rep[B]) = new FoldLeft[B] {
       def apply[S: Typ](z: Rep[S], comb: Comb[B, S]) = self.apply(
-          z,
-          (acc: Rep[S], elem: Rep[A]) => comb(acc, f(elem))
-        )
+        z,
+        (acc: Rep[S], elem: Rep[A]) => comb(acc, f(elem))
+      )
     }
 
     /**
@@ -60,9 +60,9 @@ trait FoldLefts
      */
     def filter(p: Rep[A] => Rep[Boolean]) = new FoldLeft[A] {
       def apply[S: Typ](z: Rep[S], comb: Comb[A, S]) = self.apply(
-          z,
-          (acc: Rep[S], elem: Rep[A]) => if (p(elem)) comb(acc, elem) else acc
-        )
+        z,
+        (acc: Rep[S], elem: Rep[A]) => if (p(elem)) comb(acc, elem) else acc
+      )
     }
 
     /**
@@ -70,13 +70,13 @@ trait FoldLefts
      */
     def flatMap[B: Typ](f: Rep[A] => FoldLeft[B]) = new FoldLeft[B] {
       def apply[S: Typ](z: Rep[S], comb: Comb[B, S]) = self.apply(
-          z,
-          (acc: Rep[S], elem: Rep[A]) => {
-            val nestedFld = f(elem)
-            nestedFld.apply(acc, comb)
-          }
-        )
-      }
+        z,
+        (acc: Rep[S], elem: Rep[A]) => {
+          val nestedFld = f(elem)
+          nestedFld.apply(acc, comb)
+        }
+      )
+    }
 
     /**
      * concat
@@ -124,12 +124,12 @@ trait FoldLefts
      */
     def partitionBis(p: Rep[A] => Rep[Boolean]) = new FoldLeft[Either[A, A]] {
       def apply[S: Typ](z: Rep[S], comb: Comb[Either[A, A], S]) = self.apply(
-          z,
-          (acc: Rep[S], elem: Rep[A]) =>
-            if (p(elem)) comb(acc, left[A, A](elem))
-            else comb(acc, right[A, A](elem))
-        )
-      }
+        z,
+        (acc: Rep[S], elem: Rep[A]) =>
+          if (p(elem)) comb(acc, left[A, A](elem))
+          else comb(acc, right[A, A](elem))
+      )
+    }
 
     /**
      * partition, that produces a FoldLeft over `EitherCPS` instead of

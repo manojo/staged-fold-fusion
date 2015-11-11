@@ -323,7 +323,7 @@ class FoldLeftSuite extends FileDiffSpec {
 
   val prefix = "test-out/"
 
-  def `main API  generate code with no diff` = {
+  def `main API generate code with no diff` = {
     withOutFile(prefix + "foldleft") {
       new FoldLeftProg
           with FoldLeftExp
