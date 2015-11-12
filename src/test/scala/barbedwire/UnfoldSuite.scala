@@ -90,6 +90,16 @@ trait UnfoldProg
       else ls
     )
   }
+
+  /**
+   * filter over a range, with the standard lib iterator
+   * implementation
+   */
+  def filter2Range(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeIterator(a, b)
+    val filtered = xs filter2 (_ % unit(2) == unit(1))
+    filtered.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
+  }
 }
 
 /**
@@ -164,6 +174,13 @@ class UnfoldSuite extends FileDiffSpec {
 
         val testcFiltermapRange = compile2(filtermapRange)
         scala.Console.println(testcFiltermapRange(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(filter2Range _, "filter2Range", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFilter2Range = compile2(filter2Range)
+        scala.Console.println(testcFilter2Range(1, 5))
         codegen.reset
 
       }

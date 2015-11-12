@@ -9,7 +9,8 @@ import lms.util._
  */
 trait Unfolds
     extends FoldLefts
-    with OptionOps {
+    with OptionOps
+    with ZeroVal {
 
 
   abstract class Iterator[A: Typ] { self =>
@@ -65,6 +66,55 @@ trait Unfolds
         val nextAndRest = self.next(s)
         make_tuple2(if (p(nextAndRest._1)) Some(nextAndRest._1) else none[A](), nextAndRest._2)
       }
+    }
+
+    /**
+     * a filter implemented like the one in the Scala standard library
+     * eagerly runs the filter until it finds an element satisfying the
+     * predicate
+     *
+     * @see `https://github.com/scala/scala/blob/2.11.x/src/library/scala/collection/Iterator.scala`
+     */
+    def filter2(p: Rep[A] => Rep[Boolean]): Iterator[A] = new Iterator[A] {
+      type Source = self.Source
+      implicit def sourceTyp = self.sourceTyp
+
+      var hd = unit(zeroVal[A])
+      var curTail = unit(zeroVal[Source])
+
+      def source = self.source
+
+      def atEnd(s: Rep[Source]): Rep[Boolean] =
+        if (self.atEnd(s)) unit(true)
+        else {
+          var tmpAtEnd = unit(false)
+          var tmpSource = s
+          val nextAndRest = self.next(tmpSource)
+          var tmpHd = nextAndRest._1
+          var tmpRest = nextAndRest._2
+
+          while (!(tmpAtEnd || p(tmpHd))) {
+            tmpSource = tmpRest
+            if (self.atEnd(tmpSource)) { tmpAtEnd = unit(true) }
+            else {
+              val nextAndRest2 = self.next(tmpSource)
+              tmpHd = nextAndRest2._1
+              tmpRest = nextAndRest2._2
+            }
+          }
+
+          hd = tmpHd; curTail = tmpRest
+          tmpAtEnd
+        }
+
+      /**
+       * super effectful operation. Very ugly way to write this
+       * of course, returns null values too.
+       * But looks like the implementation in the standard library
+       */
+      def next(s: Rep[Source]): Rep[(A, Source)] =
+        if (atEnd(s)) unit(zeroVal[(A, Source)])
+        else make_tuple2(readVar(hd), readVar(curTail))
     }
   }
 
