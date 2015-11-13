@@ -4,12 +4,14 @@ import scala.lms.common._
 import lms._
 import lms.util._
 
+
 /**
  * Let's try to partially evaluate Iterators, or Unfolds
  */
 trait Unfolds
     extends FoldLefts
     with OptionOps
+    with OptionCPS
     with ZeroVal {
 
 
@@ -116,6 +118,21 @@ trait Unfolds
         if (atEnd(s)) unit(zeroVal[(A, Source)])
         else make_tuple2(readVar(hd), readVar(curTail))
     }
+
+    /**
+     * Let's pump out OptionCPS
+     */
+    def filterCPS(p: Rep[A] => Rep[Boolean]) = new Iterator[OptionCPS[A]] {
+      type Source = self.Source
+      implicit def sourceTyp = self.sourceTyp
+      def source = self.source
+      def atEnd(s: Rep[Source]): Rep[Boolean] = self.atEnd(s)
+      def next(s: Rep[Source]): Rep[(OptionCPS[A], Source)] = {
+        val nextAndRest = self.next(s)
+        val opt = if (p(nextAndRest._1)) mkSome(nextAndRest._1) else mkNone[A]
+        make_tuple2(opt, nextAndRest._2)
+      }
+    }
   }
 
   /**
@@ -132,6 +149,9 @@ trait Unfolds
 
   }
 
+  /**
+   * iterates over ranges
+   */
   def rangeIterator(a: Rep[Int], b: Rep[Int]) = new Iterator[Int] {
     type Source = Int
     def sourceTyp = intTyp

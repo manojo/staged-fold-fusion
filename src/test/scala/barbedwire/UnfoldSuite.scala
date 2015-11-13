@@ -100,6 +100,17 @@ trait UnfoldProg
     val filtered = xs filter2 (_ % unit(2) == unit(1))
     filtered.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
   }
+
+  /**
+   * filter over a range, cps encoding of option
+   */
+  def filterCPSRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeIterator(a, b)
+    val filtered = xs filterCPS (_ % unit(2) == unit(1))
+    filtered.toFold.apply[List[Int]](List[Int](), (ls, x) =>
+      x.apply(_ => ls, elem => ls ++ List(elem))
+    )
+  }
 }
 
 /**
@@ -111,6 +122,7 @@ trait UnfoldExp
   with EqualExpOpt
   with StringOpsExp
   with OptionOpsExp
+  with OptionCPSExp
 
 trait UnfoldGen
   extends FoldLeftGen
@@ -181,6 +193,13 @@ class UnfoldSuite extends FileDiffSpec {
 
         val testcFilter2Range = compile2(filter2Range)
         scala.Console.println(testcFilter2Range(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(filterCPSRange _, "filterCPSRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFilterCPSRange = compile2(filterCPSRange)
+        scala.Console.println(testcFilterCPSRange(1, 5))
         codegen.reset
 
       }
