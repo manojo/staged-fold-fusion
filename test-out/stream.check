@@ -1,0 +1,249 @@
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class streamId extends ((Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int): scala.collection.immutable.List[Int] = {
+val x1 = List(1,2,3)
+var x3: scala.collection.immutable.List[Int] = x1
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x20 = while ({val x5 = x3
+val x6 = x5.isEmpty
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x14 = x4
+val x10 = x9.head
+val x15 = List(x10)
+val x16 = x14 ::: x15
+x4 = x16
+val x12 = x9.tail
+x3 = x12
+()
+}
+val x21 = x4
+x21
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(1, 2, 3)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class map extends ((Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int): scala.collection.immutable.List[Int] = {
+val x1 = List(1,2,3)
+var x3: scala.collection.immutable.List[Int] = x1
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x23 = while ({val x5 = x3
+val x6 = x5.isEmpty
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x17 = x4
+val x10 = x9.head
+val x16 = x10 * 2
+val x18 = List(x16)
+val x19 = x17 ::: x18
+x4 = x19
+val x12 = x9.tail
+x3 = x12
+()
+}
+val x24 = x4
+x24
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(2, 4, 6)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class mapmap extends ((Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int): scala.collection.immutable.List[Int] = {
+val x1 = List(1,2,3)
+var x3: scala.collection.immutable.List[Int] = x1
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x26 = while ({val x5 = x3
+val x6 = x5.isEmpty
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x20 = x4
+val x10 = x9.head
+val x18 = x10 * 2
+val x19 = x18 + 1
+val x21 = List(x19)
+val x22 = x20 ::: x21
+x4 = x22
+val x12 = x9.tail
+x3 = x12
+()
+}
+val x27 = x4
+x27
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(3, 5, 7)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class mapmapRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x25 = while ({val x5 = x3
+val x6 = x5 > x1
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x19 = x4
+val x17 = x9 * 2
+val x18 = x17 + 1
+val x20 = List(x18)
+val x21 = x19 ::: x20
+x4 = x21
+val x11 = x9 + 1
+x3 = x11
+()
+}
+val x26 = x4
+x26
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(3, 5, 7, 9, 11)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class filterRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x25 = while ({val x5 = x3
+val x6 = x5 > x1
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x15 = x9 % 2
+val x16 = x15 == 1
+val x22 = if (x16) {
+val x17 = x4
+val x18 = List(x9)
+val x19 = x17 ::: x18
+x4 = x19
+()
+} else {
+()
+}
+val x11 = x9 + 1
+x3 = x11
+()
+}
+val x26 = x4
+x26
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(1, 3, 5)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class filtermapRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x28 = while ({val x5 = x3
+val x6 = x5 > x1
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x17 = x9 % 2
+val x18 = x17 == 1
+val x25 = if (x18) {
+val x20 = x4
+val x19 = x9 * 3
+val x21 = List(x19)
+val x22 = x20 ::: x21
+x4 = x22
+()
+} else {
+()
+}
+val x11 = x9 + 1
+x3 = x11
+()
+}
+val x29 = x4
+x29
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(3, 9, 15)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class filterfilterRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
+def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
+var x3: Int = x0
+val x2 = List()
+var x4: scala.collection.immutable.List[Int] = x2
+val x30 = while ({val x5 = x3
+val x6 = x5 > x1
+val x7 = !x6
+x7}) {
+val x9 = x3
+val x17 = x9 % 2
+val x18 = x17 == 1
+val x27 = if (x18) {
+val x19 = x9 > 3
+val x25 = if (x19) {
+val x20 = x4
+val x21 = List(x9)
+val x22 = x20 ::: x21
+x4 = x22
+()
+} else {
+()
+}
+x25
+} else {
+()
+}
+val x11 = x9 + 1
+x3 = x11
+()
+}
+val x31 = x4
+x31
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+List(5)
