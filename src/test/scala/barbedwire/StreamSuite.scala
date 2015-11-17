@@ -93,6 +93,18 @@ trait StreamProg
 
     filtered.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
   }
+
+  /**
+   * the cross-product
+   */
+  def crossProductRange(a: Rep[Int], b: Rep[Int]): Rep[Int] = {
+    val xs = rangeStream(a, unit(5))
+    val ys = rangeStream(b, unit(5))
+
+    val crossed = (xs zip ys) map (pair => pair._1 * pair._2)
+
+    crossed.toFold.apply[Int](unit(0), (acc, x) => acc + x)
+  }
 }
 
 /**
@@ -167,6 +179,15 @@ class StreamSuite extends FileDiffSpec {
 
         val testcFilterfilterRange = compile2(filterfilterRange)
         scala.Console.println(testcFilterfilterRange(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(crossProductRange _, "crossProductRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcCrossProductRange = compile2(crossProductRange)
+        scala.Console.println(testcCrossProductRange(1, 1))
+        scala.Console.println(testcCrossProductRange(1, 4))
+        scala.Console.println(testcCrossProductRange(4, 1))
         codegen.reset
 
       }

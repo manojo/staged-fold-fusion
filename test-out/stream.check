@@ -247,3 +247,51 @@ x31
 *******************************************/
 compilation: ok
 List(5)
+/*****************************************
+  Emitting Generated Code                  
+*******************************************/
+class crossProductRange extends ((Int, Int)=>(Int)) {
+def apply(x0:Int, x1:Int): Int = {
+val x2 = new Tuple2IntInt(x0,x1)
+var x3: Tuple2IntInt = x2
+var x4: Int = 0
+val x42 = while ({val x5 = x3
+val x6 = x5._1
+val x8 = x6 > 5
+val x7 = x5._2
+val x9 = x7 > 5
+val x10 = x8 || x9
+val x11 = !x10
+x11}) {
+val x13 = x3
+var x14: Boolean = false
+var x15: Int = 0
+var x16: Boolean = false
+var x17: Int = 0
+x14 = true
+val x18 = x13._1
+x15 = x18
+x16 = true
+val x19 = x13._2
+x17 = x19
+val x37 = x4
+val x36 = x18 * x19
+val x38 = x37 + x36
+x4 = x38
+val x21 = x18 + 1
+val x26 = x19 + 1
+val x32 = new Tuple2IntInt(x21,x26)
+x3 = x32
+()
+}
+val x43 = x4
+x43
+}
+}
+/*****************************************
+  End of Generated Code                  
+*******************************************/
+compilation: ok
+55
+14
+14

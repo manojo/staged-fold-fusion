@@ -87,6 +87,74 @@ trait Streams extends Unfolds {
         make_tuple2(nextAndRest._1 filter p, nextAndRest._2)
       }
     }
+
+    def zip[B: Typ](that: Stream[B])(implicit pos: scala.reflect.SourceContext) = new Stream[(A, B)] {
+
+      type Source = (self.Source, that.Source)
+      implicit def slfSourceTyp: Typ[self.Source] = self.sourceTyp
+      implicit def thatSourceTyp = that.sourceTyp
+      implicit def sourceTyp = tuple2_typ[self.Source, that.Source]
+
+      /**
+       * outright voodoo. In the absence of this implicit the
+       * type checker gives a "diverging implicit exception"
+       */
+      implicit val typAB = tuple2_typ[A, B]
+
+
+      def source = make_tuple2(self.source, that.source)
+
+      /**
+       * we allow for one list to be longer than the other one
+       */
+      def atEnd(s: Rep[Source]) = self.atEnd(s._1) || that.atEnd(s._2)
+
+      /**
+       * a zip is a join point, hence the need for "materializing" the option
+       */
+      def next(s: Rep[Source]) = {
+        var leftIsDefined = unit(false); var leftElem = unit(zeroVal[A])
+        var rightIsDefined = unit(false); var rightElem = unit(zeroVal[B])
+
+        val leftNext = self.next(s._1)
+        leftNext._1.apply(
+          _ => (),
+          elem => { leftIsDefined = unit(true); leftElem = elem }
+        )
+
+        val rightNext = that.next(s._2)
+        rightNext._1.apply(
+          _ => (),
+          elem => { rightIsDefined = unit(true); rightElem = elem }
+        )
+
+        if (leftIsDefined) {
+          if (rightIsDefined) {
+            /**
+              * need to explicitly type this because implicits
+              * fail to kick in otherwise
+              */
+            val bla: Rep[(OptionCPS[(A, B)], Source)] = make_tuple2(
+              mkSome(make_tuple2(leftElem, rightElem)),
+              make_tuple2(leftNext._2, rightNext._2)
+            )
+            bla
+
+          } else make_tuple2(
+            mkNone[(A, B)],
+            make_tuple2(s._1, rightNext._2)
+          )
+        } else {
+          if (rightIsDefined) make_tuple2(
+            mkNone[(A, B)],
+            make_tuple2(leftNext._2, s._2)
+          ) else make_tuple2(
+            mkNone[(A, B)],
+            make_tuple2(leftNext._2, rightNext._2)
+          )
+        }
+      }
+    }
   }
 
   /**
