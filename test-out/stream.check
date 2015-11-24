@@ -250,7 +250,7 @@ List(5)
 /*****************************************
   Emitting Generated Code                  
 *******************************************/
-class crossProductRange extends ((Int, Int)=>(Int)) {
+class dotProductRange extends ((Int, Int)=>(Int)) {
 def apply(x0:Int, x1:Int): Int = {
 val x2 = new Tuple2IntInt(x0,x1)
 var x3: Tuple2IntInt = x2

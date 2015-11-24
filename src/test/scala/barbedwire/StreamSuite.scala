@@ -95,15 +95,15 @@ trait StreamProg
   }
 
   /**
-   * the cross-product
+   * the dot-product
    */
-  def crossProductRange(a: Rep[Int], b: Rep[Int]): Rep[Int] = {
+  def dotProductRange(a: Rep[Int], b: Rep[Int]): Rep[Int] = {
     val xs = rangeStream(a, unit(5))
     val ys = rangeStream(b, unit(5))
 
-    val crossed = (xs zip ys) map (pair => pair._1 * pair._2)
+    val dotted = (xs zip ys) map (pair => pair._1 * pair._2)
 
-    crossed.toFold.apply[Int](unit(0), (acc, x) => acc + x)
+    dotted.toFold.apply[Int](unit(0), (acc, x) => acc + x)
   }
 }
 
@@ -181,13 +181,13 @@ class StreamSuite extends FileDiffSpec {
         scala.Console.println(testcFilterfilterRange(1, 5))
         codegen.reset
 
-        codegen.emitSource2(crossProductRange _, "crossProductRange", new java.io.PrintWriter(System.out))
+        codegen.emitSource2(dotProductRange _, "dotProductRange", new java.io.PrintWriter(System.out))
         codegen.reset
 
-        val testcCrossProductRange = compile2(crossProductRange)
-        scala.Console.println(testcCrossProductRange(1, 1))
-        scala.Console.println(testcCrossProductRange(1, 4))
-        scala.Console.println(testcCrossProductRange(4, 1))
+        val testcdotProductRange = compile2(dotProductRange)
+        scala.Console.println(testcdotProductRange(1, 1))
+        scala.Console.println(testcdotProductRange(1, 4))
+        scala.Console.println(testcdotProductRange(4, 1))
         codegen.reset
 
       }
