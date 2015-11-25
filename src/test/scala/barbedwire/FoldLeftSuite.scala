@@ -286,24 +286,6 @@ trait FoldLeftProg
   }
 }
 
-/**
- * A trait that mixes all the relevant Exp traits that are required for this example
- * The corresponding codegen trait as well
- */
-trait FoldLeftExp
-  extends ListOpsExpOpt
-  with IfThenElseExpOpt
-  with BooleanOpsExpOpt
-  with VariablesExpOpt
-  with OrderingOpsExp
-  with NumericOpsExpOpt
-  with PrimitiveOpsExpOpt
-  with WhileExp
-  with EqualExpOpt
-  with EitherOpsExp
-  with MyHashMapOpsExp
-  with EitherCPSExp
-
 trait FoldLeftGen
   extends ScalaGenListOps
   with ScalaGenIfThenElse

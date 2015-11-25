@@ -163,3 +163,14 @@ trait Unfolds
   }
 
 }
+
+/**
+ * A trait that mixes all the relevant Exp traits that are required for this example
+ * The corresponding codegen trait as well
+ */
+trait UnfoldExp
+  extends FoldLeftExp
+  with EqualExpOpt
+  with StringOpsExp
+  with OptionOpsExp
+  with OptionCPSExp
