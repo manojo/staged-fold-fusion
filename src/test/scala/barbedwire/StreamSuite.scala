@@ -105,13 +105,19 @@ trait StreamProg
 
     dotted.toFold.apply[Int](unit(0), (acc, x) => acc + x)
   }
-}
 
-/**
- * A trait that mixes all the relevant Exp traits that are required for this example
- * The corresponding codegen trait as well
- */
-trait StreamExp extends UnfoldExp
+  /**
+   * A test to see what happens to `OptionCPS[Rep[Stream]]`
+   */
+  def repStream(a: Rep[Int]): Rep[Int] = {
+    val bla: Rep[Stream[Int, Int]] =
+      //if (a > unit(3)) mkStream(rangeStream(unit(1), unit(20)))
+      //else
+      mkStream(rangeStream(a, unit(10)))
+
+    bla.toFold.apply[Int](unit(0), (acc, x) => acc + x)
+  }
+}
 
 trait StreamGen extends UnfoldGen {
   val IR: StreamExp
@@ -188,6 +194,14 @@ class StreamSuite extends FileDiffSpec {
         scala.Console.println(testcdotProductRange(1, 1))
         scala.Console.println(testcdotProductRange(1, 4))
         scala.Console.println(testcdotProductRange(4, 1))
+        codegen.reset
+
+        codegen.emitSource(repStream _, "repStream", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcRepStream = compile(repStream)
+        scala.Console.println(testcRepStream(1))
+        scala.Console.println(testcRepStream(4))
         codegen.reset
 
       }

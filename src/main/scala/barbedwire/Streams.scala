@@ -28,11 +28,13 @@ import lms.util._
  */
 trait Streams extends Unfolds {
 
+  /**
+   * implicits for creating Type Manifests
+   * new boilerplate after the Manifest -> Typ change
+   */
+  implicit def stream_typ[A: Typ, S: Typ]: Typ[Stream[A, S]]
 
-  abstract class Stream[A: Typ] { self =>
-
-    type Source
-    implicit def sourceTyp: Typ[Source]
+  abstract class Stream[A: Typ, Source: Typ] { self =>
 
     def source: Rep[Source]
 
@@ -46,7 +48,7 @@ trait Streams extends Unfolds {
         var tmpSink = z
 
         while (!atEnd(tmpSource)) {
-          val elem = next(tmpSource)
+          val elem: Rep[(OptionCPS[A], Source)] = next(tmpSource)
 
           /**
            * The key step. This is where we peel out the option
@@ -63,9 +65,7 @@ trait Streams extends Unfolds {
       }
     }
 
-    def map[B: Typ](f: Rep[A] => Rep[B]) = new Stream[B] {
-      type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+    def map[B: Typ](f: Rep[A] => Rep[B]) = new Stream[B, Source] {
 
       def source = self.source
 
@@ -76,9 +76,7 @@ trait Streams extends Unfolds {
       }
     }
 
-    def filter(p: Rep[A] => Rep[Boolean]) = new Stream[A] {
-      type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+    def filter(p: Rep[A] => Rep[Boolean]) = new Stream[A, Source] {
 
       def source = self.source
       def atEnd(s: Rep[Source]): Rep[Boolean] = self.atEnd(s)
@@ -88,12 +86,12 @@ trait Streams extends Unfolds {
       }
     }
 
-    def zip[B: Typ](that: Stream[B])(implicit pos: scala.reflect.SourceContext) = new Stream[(A, B)] {
+    def zip[B: Typ, S2: Typ](that: Stream[B, S2]) = new Stream[(A, B), (Source, S2)] {
 
-      type Source = (self.Source, that.Source)
-      implicit def slfSourceTyp: Typ[self.Source] = self.sourceTyp
-      implicit def thatSourceTyp = that.sourceTyp
-      implicit def sourceTyp = tuple2_typ[self.Source, that.Source]
+      type InnerSource = (Source, S2)
+//      implicit def slfSourceTyp: Typ[Source] = typ[Source]
+//      implicit def thatSourceTyp = typ[S2]
+      implicit def sourceTyp = tuple2_typ[Source, S2]
 
       /**
        * outright voodoo. In the absence of this implicit the
@@ -107,12 +105,12 @@ trait Streams extends Unfolds {
       /**
        * we allow for one list to be longer than the other one
        */
-      def atEnd(s: Rep[Source]) = self.atEnd(s._1) || that.atEnd(s._2)
+      def atEnd(s: Rep[InnerSource]) = self.atEnd(s._1) || that.atEnd(s._2)
 
       /**
        * a zip is a join point, hence the need for "materializing" the option
        */
-      def next(s: Rep[Source]) = {
+      def next(s: Rep[InnerSource]) = {
         var leftIsDefined = unit(false); var leftElem = unit(zeroVal[A])
         var rightIsDefined = unit(false); var rightElem = unit(zeroVal[B])
 
@@ -134,7 +132,7 @@ trait Streams extends Unfolds {
               * need to explicitly type this because implicits
               * fail to kick in otherwise
               */
-            val bla: Rep[(OptionCPS[(A, B)], Source)] = make_tuple2(
+            val bla: Rep[(OptionCPS[(A, B)], InnerSource)] = make_tuple2(
               mkSome(make_tuple2(leftElem, rightElem)),
               make_tuple2(leftNext._2, rightNext._2)
             )
@@ -155,15 +153,77 @@ trait Streams extends Unfolds {
         }
       }
     }
+
+    /**
+     * A helper for creating a new Stream with a different source
+     */
+    def addNewSource(s: Rep[Source]) = new Stream[A, Source] {
+      def source = s
+      def next(s: Rep[Source]) = self.next(s)
+      def atEnd(s: Rep[Source]) = self.atEnd(s)
+    }
+
+/*
+    /**
+     * The big one, flatMap
+     */
+    def flatMap[B: Typ, S2: Typ](f: Rep[A] => Stream[B, S2]): Stream[B, (Source, Option[Stream[B, S2]])] = new Stream[B, (Source, Option[Stream[B, S2]])] {
+
+      /**
+       * this encoding is in tune with the Stream Fusion one
+       * We directly use `Option` and not `OptionCPS` because
+       * we need a materialized result. To be determined whether
+       * the boxing here results in bad perf
+       */
+      type S = (Source, Option[Stream[B, S2]])
+
+      /**
+       * need a sourceTyp etc.
+       */
+      //implicit def streamTyp =
+      implicit def slfSourceTyp: Typ[self.Source] = self.sourceTyp
+      implicit def itTyp: Typ[Stream[B]] = ???
+      implicit def sourceTyp = tuple2_typ[self.Source, Option[Stream[B]]]
+
+      def source = make_tuple2(self.source,  none[Stream[B, S2]])
+      def atEnd(s: Rep[Source]) = self.atEnd(s._1) && !(s._2.isDefined)
+
+      def next(s: Rep[Source]): Rep[(OptionCPS[B], Source)] = {
+
+        val outer = s._1
+        val innerOpt = s._2
+
+        /**
+         * is `innerOpt` is around, then we pull from this guy
+         */
+        if (innerOpt.isDefined) {
+          val inner: Rep[Stream[B, S2]] = innerOpt.get
+          val elem = stream_next(inner, stream_source(inner))
+          val newStream = stream_addSource(inner, elem._2)
+          make_tuple2(
+            elem._1,
+            make_tuple2(outer, Some(newStream))
+          )
+        } else {
+
+          /**
+           * otherwise we pull from the left side
+           */
+          //val elem: Rep[(OptionCPS[A], self.Source)] = self.next(outer)
+          //val newInnerIt: Option[Stream[B]] = elem flatMap { a => f(a) }
+          //make_tuple2(mkNone[B], make_tuple2(elem._2, newInnerIt))
+        }
+      }
+
+    }
+    */
   }
 
   /**
    * iterates over a list
    */
-  def listStream[T: Typ](ls: Rep[List[T]]) = new Stream[T] {
+  def listStream[T: Typ](ls: Rep[List[T]]) = new Stream[T, List[T]] {
 
-    type Source = List[T]
-    def sourceTyp: Typ[List[T]] = listTyp[T]
     def source = ls
 
     def atEnd(ts: Rep[List[T]]) = ts.isEmpty
@@ -174,9 +234,8 @@ trait Streams extends Unfolds {
   /**
    * iterates over ranges
    */
-  def rangeStream(a: Rep[Int], b: Rep[Int]) = new Stream[Int] {
-    type Source = Int
-    def sourceTyp = intTyp
+  def rangeStream(a: Rep[Int], b: Rep[Int]) = new Stream[Int, Int] {
+
     def source = a
 
     def atEnd(n: Rep[Int]): Rep[Boolean] = n > b
@@ -184,4 +243,109 @@ trait Streams extends Unfolds {
 
   }
 
+  /**
+   * wrappers delight!
+   * We want to represent a `Rep[Stream]`
+   */
+  implicit class StreamOpsCls[A: Typ, S: Typ](str: Rep[Stream[A, S]]) {
+
+    def next(s: Rep[S]): Rep[(OptionCPS[A], S)] = stream_next(str, s)
+    def atEnd(s: Rep[S]): Rep[Boolean] = stream_atEnd(str, s)
+    //def map[B: Typ](f: Rep[A] => Rep[B]) = stream_map(str, f)
+
+    def toFold: FoldLeft[A] = stream_tofold(str)
+
+    /**
+     * we won't define some operations on `Rep[Stream]`, such as `toFold`.
+     * we are only interested in folding from the outside, at least for now.
+     * same for `zip`.
+     * other ops, we don't define out of laziness
+     */
+  }
+
+
+  def stream_atEnd[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[Boolean]
+
+  def stream_next[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[(OptionCPS[A], S)]
+
+  def stream_source[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]]
+  ): Rep[S]
+
+  def stream_addSource[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[Stream[A, S]]
+
+  def mkStream[A: Typ, S: Typ](str: Stream[A, S]): Rep[Stream[A, S]]
+  def stream_tofold[A: Typ, S: Typ](str: Rep[Stream[A, S]]): FoldLeft[A]
+
+  /**
+   * tests on alternate signatures
+   * ignoring for now.
+   */
+  //def stream_atBla[A: Typ](str: Rep[Stream[A]]{ type Src })(s: str.Src): Rep[Boolean]
+
 }
+
+
+/**
+ * The full wrapper in delight
+ */
+trait StreamExp extends Streams with UnfoldExp {
+
+  /**
+   * implicits for creating Type Manifests
+   * new boilerplate after the Manifest -> Typ change
+   */
+  implicit def stream_typ[A: Typ, S: Typ]: Typ[Stream[A, S]] = {
+    implicit val ManifestTyp(mA) = typ[A]
+    implicit val ManifestTyp(mS) = typ[S]
+    manifestTyp
+  }
+
+  case class StreamWrapper[A: Typ, S: Typ](str: Stream[A, S])
+    extends Def[Stream[A, S]]
+
+  def stream_atEnd[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[Boolean] = str match {
+    case Def(StreamWrapper(innerStr)) => innerStr.atEnd(s)
+  }
+
+  def stream_next[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[(OptionCPS[A], S)] = str match {
+    case Def(StreamWrapper(innerStr)) => innerStr.next(s)
+  }
+
+  def stream_source[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]]
+  ): Rep[S] = str match {
+    case Def(StreamWrapper(innerStr)) => innerStr.source
+  }
+
+  def stream_addSource[A: Typ, S: Typ](
+    str: Rep[Stream[A, S]],
+    s: Rep[S]
+  ): Rep[Stream[A, S]] = str match {
+    case Def(StreamWrapper(innerStr)) => StreamWrapper(innerStr.addNewSource(s))
+  }
+
+  def mkStream[A: Typ, S: Typ](str: Stream[A, S]): Rep[Stream[A, S]] =
+    StreamWrapper(str)
+
+  def stream_tofold[A: Typ, S: Typ](str: Rep[Stream[A, S]]): FoldLeft[A] = str match {
+    case Def(StreamWrapper(innerStr)) => innerStr.toFold
+  }
+
+}
+
