@@ -111,11 +111,45 @@ trait StreamProg
    */
   def repStream(a: Rep[Int]): Rep[Int] = {
     val bla: Rep[Stream[Int, Int]] =
-      //if (a > unit(3)) mkStream(rangeStream(unit(1), unit(20)))
-      //else
       mkStream(rangeStream(a, unit(10)))
 
     bla.toFold.apply[Int](unit(0), (acc, x) => acc + x)
+  }
+
+  /**
+   * Let's do a test with conditional over (OptionCPS[A], Int)
+   */
+  def tupleOptionTest(a: Rep[Int]): Rep[Int] = {
+
+    val myValue: Rep[(OptionCPS[Int], Int)] =
+      if (a < unit(3)) (mkSome(a + unit(1)), a)
+      else (mkNone[Int], a + unit(1))
+
+    val res: Rep[(Option[Int], Int)] =  (myValue._1.toOption, myValue._2)
+    myValue._2
+  }
+
+  /**
+   * flatten over a range
+   */
+  def flattenRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeStream(a, b)
+    val flattened = xs.flatten[Int, Int](
+      a => a,
+      s => s > unit(5),
+      s => make_tuple2(make_opt(Some(s)), s + unit(1))
+    )
+
+    flattened.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
+  }
+
+  /**
+   * flatMap over a range
+   */
+  def flatMapRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+    val xs = rangeStream(a, b)
+    val flatMapped = xs flatMap (i => rangeStream(unit(1), i))
+    flatMapped.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
   }
 }
 
@@ -202,6 +236,28 @@ class StreamSuite extends FileDiffSpec {
         val testcRepStream = compile(repStream)
         scala.Console.println(testcRepStream(1))
         scala.Console.println(testcRepStream(4))
+        codegen.reset
+
+//        codegen.emitSource(tupleOptionTest _, "tupleOptionTest", new java.io.PrintWriter(System.out))
+//        codegen.reset
+//
+//        val testcTupleOptionTest = compile(tupleOptionTest)
+//        scala.Console.println(testcTupleOptionTest(1))
+//        scala.Console.println(testcTupleOptionTest(4))
+//        codegen.reset
+
+        codegen.emitSource2(flattenRange _, "flattenRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFlattenRange = compile2(flattenRange)
+        scala.Console.println(testcFlattenRange(1, 5))
+        codegen.reset
+
+        codegen.emitSource2(flatMapRange _, "flatMapRange", new java.io.PrintWriter(System.out))
+        codegen.reset
+
+        val testcFlatMapRange = compile2(flatMapRange)
+        scala.Console.println(testcFlatMapRange(1, 5))
         codegen.reset
 
       }

@@ -18,6 +18,9 @@ lazy val commonSettings = Seq(
   )
 ) ++ publishSettings ++ publishableSettings
 
+//implicit logging
+//scalacOptions in ThisBuild += "-Xlog-implicits"
+
 lazy val root = (project in file(".")).
   settings(commonSettings: _*).
   settings(
