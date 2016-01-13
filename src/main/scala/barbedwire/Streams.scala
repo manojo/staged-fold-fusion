@@ -25,6 +25,9 @@ import lms.util._
  *
  * For now we ignore CPS encoding the pair, but we may need to look into that at
  * some point.
+ *
+ * see the following related post: http://manojo.github.io/2016/01/13/stream-fusion-is-pefible/
+ *
  */
 trait Streams extends Unfolds {
 
