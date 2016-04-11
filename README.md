@@ -9,14 +9,6 @@ Modular Staging. You may wish to read the [Scala '15](http://lampwww.epfl.ch/~hm
 publication of this work [here](http://infoscience.epfl.ch/record/209021/files/p41-jonnalagedda.pdf).
 You can also take a look at slides [here](http://lampwww.epfl.ch/~hmiller/scala2015/slides/fold_based_fusion.pdf).
 
-Update (27 april 2015): The Scala version has just been bumped. If you have
-downloaded this project before this date, and are updating, make sure you do the
-same for the LMS dependency as well (i.e. publish-local the latest version).
-
-Update (7 september 2015): You no longer need to publish-local!
-
-Update (11 september 2015): You can now re-use this code in a sane manner
-
 Important Files
 ===============
 
@@ -73,4 +65,15 @@ Here are some basic LMS conventions I use when writing LMS code:
     explicitly, even if some other trait I'm using has it already. Serves for
     documentation purposes. Of course, for really trivial stuff it's not necessary
     to do so.
+
+History
+=======
+
+Update (27 april 2015): The Scala version has just been bumped. If you have
+downloaded this project before this date, and are updating, make sure you do the
+same for the LMS dependency as well (i.e. publish-local the latest version).
+
+Update (7 september 2015): You no longer need to publish-local!
+
+Update (11 september 2015): You can now re-use this code in a sane manner
 
