@@ -40,8 +40,7 @@ Running the code
 To run the code, please follow these steps:
 
   1. Clone this here repo in a separate folder: `git clone git@github.com:manojo/staged-fold-fusion.git`.
-  2. ???
-  3. Profit:
+  2. Profit:
   ```
     $ cd staged-fold-fusion
     $ sbt
@@ -53,8 +52,7 @@ Hope you have fun!
 Using the code in your project
 ==============================
 
-This repo has been snapshot on Sonatype. Add the following lines to your
-`sbt` build to start using:
+Add the following lines to your `sbt` build to start using:
 
     libraryDependencies += "com.github.manojo" % "staged-fold-fusion
     _2.11" % "0.1-SNAPSHOT"
