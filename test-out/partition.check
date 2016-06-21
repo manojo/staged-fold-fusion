@@ -282,51 +282,51 @@ var x4: Int = x0
 val x2 = List()
 val x3 = new Tuple2ListIntListInt(x2,x2)
 var x5: Tuple2ListIntListInt = x3
-val x46 = while ({val x6 = x4
+val x42 = while ({val x6 = x4
 val x7 = x6 <= x1
 x7}) {
 val x9 = x5
 val x10 = x4
-var x17: Int = 0
-var x18: Int = 0
-var x19: Boolean = true
+var x13: Int = 0
+var x14: Int = 0
+var x15: Boolean = true
 val x11 = x10 % 2
 val x12 = x11 == 0
-val x25 = if (x12) {
-x17 = x10
+val x21 = if (x12) {
+x13 = x10
 ()
 } else {
-x18 = x10
-x19 = false
+x14 = x10
+x15 = false
 ()
 }
-val x26 = x19
-val x41 = if (x26) {
-val x27 = x17
-val x30 = x9._2
-val x29 = x9._1
-val x28 = x27 * 2
-val x31 = List(x28)
-val x32 = x29 ::: x31
-val x33 = new Tuple2ListIntListInt(x32,x30)
-x33
+val x22 = x15
+val x37 = if (x22) {
+val x23 = x13
+val x26 = x9._2
+val x25 = x9._1
+val x24 = x23 * 2
+val x27 = List(x24)
+val x28 = x25 ::: x27
+val x29 = new Tuple2ListIntListInt(x28,x26)
+x29
 } else {
-val x35 = x18
-val x29 = x9._1
-val x30 = x9._2
-val x36 = x35 * 3
-val x37 = List(x36)
-val x38 = x30 ::: x37
-val x39 = new Tuple2ListIntListInt(x29,x38)
-x39
+val x31 = x14
+val x25 = x9._1
+val x26 = x9._2
+val x32 = x31 * 3
+val x33 = List(x32)
+val x34 = x26 ::: x33
+val x35 = new Tuple2ListIntListInt(x25,x34)
+x35
 }
-x5 = x41
-val x43 = x10 + 1
-x4 = x43
+x5 = x37
+val x39 = x10 + 1
+x4 = x39
 ()
 }
-val x47 = x5
-x47
+val x43 = x5
+x43
 }
 }
 /*****************************************
