@@ -297,7 +297,8 @@ trait FoldLeftGen
   with ScalaGenWhile
   with ScalaGenEqual
   with ScalaGenEitherOps
-  with MyScalaGenHashMapOps {
+  with MyScalaGenHashMapOps
+  with EitherCPSGenBase {
   val IR: FoldLeftExp
 }
 
@@ -310,8 +311,8 @@ class FoldLeftSuite extends FileDiffSpec {
       new FoldLeftProg
           with FoldLeftExp
           with TupleOpsExp
-          /** this trait should be mixed in higher up */ with ArrayOpsExp
-          /** this trait should be mixed in higher up */ with SeqOpsExp
+          ///** this trait should be mixed in higher up */ with ArrayOpsExp
+          ///** this trait should be mixed in higher up */ with SeqOpsExp
           with MyScalaCompile { self =>
 
         val codegen = new FoldLeftGen with ScalaGenTupleOps { val IR: self.type = self }
@@ -410,8 +411,8 @@ class FoldLeftSuite extends FileDiffSpec {
       new FoldLeftProg
           with FoldLeftExp
           with TupleOpsExp
-          /** this trait should be mixed in higher up */ with ArrayOpsExp
-          /** this trait should be mixed in higher up */ with SeqOpsExp
+          ///** this trait should be mixed in higher up */ with ArrayOpsExp
+          ///** this trait should be mixed in higher up */ with SeqOpsExp
           with MyScalaCompile { self =>
 
         val codegen = new FoldLeftGen with ScalaGenTupleOps { val IR: self.type = self }
@@ -475,12 +476,12 @@ class FoldLeftSuite extends FileDiffSpec {
   def `reverse index generate code with no diff` = {
     withOutFile(prefix + "reverse-index") {
       new FoldLeftProg
-      with FoldLeftExp
-      with TupleOpsExp
-      with StringOpsExp
-      /** this trait should be mixed in higher up */ with ArrayOpsExp
-      /** this trait should be mixed in higher up */ with SeqOpsExp
-      with MyScalaCompile { self =>
+          with FoldLeftExp
+          with TupleOpsExp
+          with StringOpsExp
+          ///** this trait should be mixed in higher up */ with ArrayOpsExp
+          ///** this trait should be mixed in higher up */ with SeqOpsExp
+          with MyScalaCompile { self =>
 
         val codegen = new FoldLeftGen
                       with ScalaGenTupleOps

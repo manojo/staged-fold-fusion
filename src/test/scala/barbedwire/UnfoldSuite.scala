@@ -11,7 +11,7 @@ import java.io.StringWriter
 import java.io.FileOutputStream
 
 /**
- * Basic test suite for foldleft
+ * Basic test suite for unfold
  */
 
 trait UnfoldProg
@@ -146,22 +146,23 @@ trait UnfoldProg
    * over a range, cps encoding of option
    * we want to verify that we don't blow up code generation.
    */
-  def filterfilterCPSRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
-    val xs = rangeIterator(a, b)
-    val odds = xs filterCPS (_ % unit(2) == unit(1))
-    val filtered = odds filterCPS (x => x.apply(
-      _ => unit(false),
-      elem => elem > unit(3)
-    ))
-
-    filtered.toFold.apply[List[Int]](List[Int](), (ls, x) =>
-      x.apply(_ => ls, opt => opt.apply(_ => ls, elem => ls ++ List(elem)))
-    )
-  }
+//  def filterfilterCPSRange(a: Rep[Int], b: Rep[Int]): Rep[List[Int]] = {
+//    val xs = rangeIterator(a, b)
+//    val odds = xs filterCPS (_ % unit(2) == unit(1))
+//    val filtered = odds filterCPS (x => x.apply(
+//      _ => unit(false),
+//      elem => elem > unit(3)
+//    ))
+//
+//    filtered.toFold.apply[List[Int]](List[Int](), (ls, x) =>
+//      x.apply(_ => ls, opt => opt.apply(_ => ls, elem => ls ++ List(elem)))
+//    )
+//  }
 }
 
 trait UnfoldGen
   extends FoldLeftGen
+  with OptionCPSGenBase
   with ScalaGenEqual
   with ScalaGenOptionOps {
   val IR: UnfoldExp
@@ -176,8 +177,8 @@ class UnfoldSuite extends FileDiffSpec {
       new UnfoldProg
           with UnfoldExp
           with TupleOpsExp
-          /** this trait should be mixed in higher up */ with ArrayOpsExp
-          /** this trait should be mixed in higher up */ with SeqOpsExp
+          ///** this trait should be mixed in higher up */ with ArrayOpsExp
+          ///** this trait should be mixed in higher up */ with SeqOpsExp
           with MyScalaCompile { self =>
 
         val codegen = new UnfoldGen with ScalaGenTupleOps { val IR: self.type = self }
@@ -245,12 +246,12 @@ class UnfoldSuite extends FileDiffSpec {
         scala.Console.println(testcFilterfilterRange(1, 5))
         codegen.reset
 
-        codegen.emitSource2(filterfilterCPSRange _, "filterfilterCPSRange", new java.io.PrintWriter(System.out))
-        codegen.reset
-
-        val testcFilterfilterCPSRange = compile2(filterfilterCPSRange)
-        scala.Console.println(testcFilterfilterCPSRange(1, 5))
-        codegen.reset
+//        codegen.emitSource2(filterfilterCPSRange _, "filterfilterCPSRange", new java.io.PrintWriter(System.out))
+//        codegen.reset
+//
+//        val testcFilterfilterCPSRange = compile2(filterfilterCPSRange)
+//        scala.Console.println(testcFilterfilterCPSRange(1, 5))
+//        codegen.reset
 
       }
     }

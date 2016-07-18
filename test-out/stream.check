@@ -7,22 +7,33 @@ val x1 = List(1,2,3)
 var x3: scala.collection.immutable.List[Int] = x1
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x20 = while ({val x5 = x3
+val x31 = while ({val x5 = x3
 val x6 = x5.isEmpty
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x14 = x4
-val x10 = x9.head
-val x15 = List(x10)
-val x16 = x14 ::: x15
-x4 = x16
-val x12 = x9.tail
-x3 = x12
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+x10 = true
+val x14 = x13.head
+x11 = x14
+val x16 = x13.tail
+x3 = x16
+val x21 = x10
+val x22 = x11
+val x29 = if (x21) {
+val x24 = x4
+val x25 = List(x22)
+val x26 = x24 ::: x25
+x4 = x26
+()
+} else {
 ()
 }
-val x21 = x4
-x21
+x29
+}
+val x32 = x4
+x32
 }
 }
 /*****************************************
@@ -39,23 +50,34 @@ val x1 = List(1,2,3)
 var x3: scala.collection.immutable.List[Int] = x1
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x23 = while ({val x5 = x3
+val x34 = while ({val x5 = x3
 val x6 = x5.isEmpty
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x17 = x4
-val x10 = x9.head
-val x14 = x10 * 2
-val x18 = List(x14)
-val x19 = x17 ::: x18
-x4 = x19
-val x12 = x9.tail
-x3 = x12
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+x10 = true
+val x14 = x13.head
+val x20 = x14 * 2
+x11 = x20
+val x16 = x13.tail
+x3 = x16
+val x24 = x10
+val x25 = x11
+val x32 = if (x24) {
+val x27 = x4
+val x28 = List(x25)
+val x29 = x27 ::: x28
+x4 = x29
+()
+} else {
 ()
 }
-val x24 = x4
-x24
+x32
+}
+val x35 = x4
+x35
 }
 }
 /*****************************************
@@ -72,24 +94,35 @@ val x1 = List(1,2,3)
 var x3: scala.collection.immutable.List[Int] = x1
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x26 = while ({val x5 = x3
+val x37 = while ({val x5 = x3
 val x6 = x5.isEmpty
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x20 = x4
-val x10 = x9.head
-val x14 = x10 * 2
-val x17 = x14 + 1
-val x21 = List(x17)
-val x22 = x20 ::: x21
-x4 = x22
-val x12 = x9.tail
-x3 = x12
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+x10 = true
+val x14 = x13.head
+val x22 = x14 * 2
+val x23 = x22 + 1
+x11 = x23
+val x16 = x13.tail
+x3 = x16
+val x27 = x10
+val x28 = x11
+val x35 = if (x27) {
+val x30 = x4
+val x31 = List(x28)
+val x32 = x30 ::: x31
+x4 = x32
+()
+} else {
 ()
 }
-val x27 = x4
-x27
+x35
+}
+val x38 = x4
+x38
 }
 }
 /*****************************************
@@ -105,23 +138,34 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x25 = while ({val x5 = x3
+val x36 = while ({val x5 = x3
 val x6 = x5 > x1
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x19 = x4
-val x13 = x9 * 2
-val x16 = x13 + 1
-val x20 = List(x16)
-val x21 = x19 ::: x20
-x4 = x21
-val x11 = x9 + 1
-x3 = x11
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+x10 = true
+val x21 = x13 * 2
+val x22 = x21 + 1
+x11 = x22
+val x15 = x13 + 1
+x3 = x15
+val x26 = x10
+val x27 = x11
+val x34 = if (x26) {
+val x29 = x4
+val x30 = List(x27)
+val x31 = x29 ::: x30
+x4 = x31
+()
+} else {
 ()
 }
-val x26 = x4
-x26
+x34
+}
+val x37 = x4
+x37
 }
 }
 /*****************************************
@@ -137,37 +181,40 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x15 = new OptionInt(0,false)
-val x28 = while ({val x5 = x3
+val x38 = while ({val x5 = x3
 val x6 = x5 > x1
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x13 = x9 % 2
-val x14 = x13 == 1
-val x16 = if (x14) {
-val x10 = new OptionInt(x9,true)
-x10
-} else {
-x15
-}
-val x18 = x16.defined
-val x25 = if (x18) {
-val x19 = x4
-val x20 = x16.value
-val x21 = List(x20)
-val x22 = x19 ::: x21
-x4 = x22
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+val x19 = x13 % 2
+val x20 = x19 == 1
+val x26 = if (x20) {
+x10 = true
+x11 = x13
 ()
 } else {
+x10 = false
 ()
 }
-val x11 = x9 + 1
-x3 = x11
+val x15 = x13 + 1
+x3 = x15
+val x28 = x10
+val x29 = x11
+val x36 = if (x28) {
+val x31 = x4
+val x32 = List(x29)
+val x33 = x31 ::: x32
+x4 = x33
+()
+} else {
 ()
 }
-val x29 = x4
-x29
+x36
+}
+val x39 = x4
+x39
 }
 }
 /*****************************************
@@ -183,46 +230,41 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x15 = new OptionInt(0,false)
-val x34 = while ({val x5 = x3
+val x41 = while ({val x5 = x3
 val x6 = x5 > x1
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x13 = x9 % 2
-val x14 = x13 == 1
-val x16 = if (x14) {
-val x10 = new OptionInt(x9,true)
-x10
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+val x21 = x13 % 2
+val x22 = x21 == 1
+val x29 = if (x22) {
+x10 = true
+val x23 = x13 * 3
+x11 = x23
+()
 } else {
-x15
+x10 = false
+()
 }
-val x18 = x16.defined
-val x22 = if (x18) {
-val x19 = x16.value
-val x20 = x19 * 3
-val x21 = new OptionInt(x20,true)
-x21
-} else {
-x15
-}
-val x24 = x22.defined
-val x31 = if (x24) {
-val x25 = x4
-val x26 = x22.value
-val x27 = List(x26)
-val x28 = x25 ::: x27
-x4 = x28
+val x15 = x13 + 1
+x3 = x15
+val x31 = x10
+val x32 = x11
+val x39 = if (x31) {
+val x34 = x4
+val x35 = List(x32)
+val x36 = x34 ::: x35
+x4 = x36
 ()
 } else {
 ()
 }
-val x11 = x9 + 1
-x3 = x11
-()
+x39
 }
-val x35 = x4
-x35
+val x42 = x4
+x42
 }
 }
 /*****************************************
@@ -238,46 +280,47 @@ def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
 var x3: Int = x0
 val x2 = List()
 var x4: scala.collection.immutable.List[Int] = x2
-val x15 = new OptionInt(0,false)
-val x34 = while ({val x5 = x3
+val x45 = while ({val x5 = x3
 val x6 = x5 > x1
 val x7 = !x6
 x7}) {
-val x9 = x3
-val x13 = x9 % 2
-val x14 = x13 == 1
-val x16 = if (x14) {
-val x10 = new OptionInt(x9,true)
-x10
+var x10: Boolean = false
+var x11: Int = 0
+val x13 = x3
+val x21 = x13 % 2
+val x22 = x21 == 1
+val x33 = if (x22) {
+val x23 = x13 > 3
+val x29 = if (x23) {
+x10 = true
+x11 = x13
+()
 } else {
-x15
+x10 = false
+()
 }
-val x18 = x16.defined
-val x19 = x16.value
-val x20 = x19 > 3
-val x21 = x18 && x20
-val x22 = if (x21) {
-x16
+x29
 } else {
-x15
+x10 = false
+()
 }
-val x24 = x22.defined
-val x31 = if (x24) {
-val x25 = x4
-val x26 = x22.value
-val x27 = List(x26)
-val x28 = x25 ::: x27
-x4 = x28
+val x15 = x13 + 1
+x3 = x15
+val x35 = x10
+val x36 = x11
+val x43 = if (x35) {
+val x38 = x4
+val x39 = List(x36)
+val x40 = x38 ::: x39
+x4 = x40
 ()
 } else {
 ()
 }
-val x11 = x9 + 1
-x3 = x11
-()
+x43
 }
-val x35 = x4
-x35
+val x46 = x4
+x46
 }
 }
 /*****************************************
@@ -290,32 +333,89 @@ List(5)
 *******************************************/
 class dotProductRange extends ((Int, Int)=>(Int)) {
 def apply(x0:Int, x1:Int): Int = {
-val x2 = new Tuple2IntInt(x0,x1)
-var x3: Tuple2IntInt = x2
-var x4: Int = 0
-val x34 = while ({val x5 = x3
-val x6 = x5._1
-val x8 = x6 > 5
-val x7 = x5._2
-val x9 = x7 > 5
-val x10 = x8 || x9
-val x11 = !x10
-x11}) {
-val x13 = x3
-val x29 = x4
-val x14 = x13._1
-val x15 = x13._2
-val x26 = x14 * x15
-val x30 = x29 + x26
-x4 = x30
-val x17 = x14 + 1
-val x20 = x15 + 1
-val x24 = new Tuple2IntInt(x17,x20)
-x3 = x24
+var x5: Boolean = false
+var x6: Int = 0
+var x8: Int = x0
+var x9: Int = x1
+var x12: Int = 0
+val x108 = while ({val x13 = x5
+val x14 = x6
+val x16 = x8
+val x17 = x9
+val x20 = x16 > 5
+val x21 = !x13
+val x22 = x20 && x21
+val x23 = x17 > 5
+val x24 = x22 || x23
+val x25 = !x24
+x25}) {
+var x27: Boolean = false
+var x28: Int = 0
+val x30 = x5
+val x31 = x6
+val x33 = x8
+val x34 = x9
+var x37: Boolean = false
+var x38: Int = 0
+var x42: Boolean = false
+var x43: Int = 0
+var x44: Int = 0
+var x47: Int = 0
+var x48: Int = 0
+x37 = x30
+x38 = x31
+x47 = x33
+x48 = x34
+val x72 = if (x30) {
+val x54 = x34 + 1
+x48 = x54
+x42 = true
+x43 = x31
+x44 = x34
+x37 = false
+x38 = 0
+()
+} else {
+x37 = true
+x38 = x33
+val x66 = x33 + 1
+x47 = x66
 ()
 }
-val x35 = x4
-x35
+val x73 = x42
+val x74 = x43
+val x75 = x44
+val x78 = x37
+val x79 = x38
+val x81 = x47
+val x82 = x48
+val x94 = if (x73) {
+x27 = true
+val x88 = x74 * x75
+x28 = x88
+()
+} else {
+x27 = false
+()
+}
+x5 = x78
+x6 = x79
+x8 = x81
+x9 = x82
+val x99 = x27
+val x100 = x28
+val x106 = if (x99) {
+val x102 = x12
+val x103 = x102 + x100
+x12 = x103
+()
+} else {
+()
+}
+x106
+}
+val x109 = x12
+x109
 }
 }
 /*****************************************
@@ -325,101 +425,84 @@ compilation: ok
 55
 14
 14
-/*****************************************
-  Emitting Generated Code                  
-*******************************************/
-class repStream extends ((Int)=>(Int)) {
-def apply(x0:Int): Int = {
-var x1: Int = x0
-var x2: Int = 0
-val x16 = while ({val x3 = x1
-val x4 = x3 > 10
-val x5 = !x4
-x5}) {
-val x7 = x1
-val x11 = x2
-val x12 = x11 + x7
-x2 = x12
-val x9 = x7 + 1
-x1 = x9
-()
-}
-val x17 = x2
-x17
-}
-}
-/*****************************************
-  End of Generated Code                  
-*******************************************/
-compilation: ok
-55
-49
 /*****************************************
   Emitting Generated Code                  
 *******************************************/
 class flattenRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
 def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
-val x3 = new OptionInt(0,false)
-val x4 = new Tuple2IntOptionInt(x0,x3)
-var x5: Tuple2IntOptionInt = x4
+var x5: Int = x0
+var x6: Boolean = false
+var x7: Int = 0
 val x2 = List()
-var x6: scala.collection.immutable.List[Int] = x2
-val x49 = while ({val x7 = x5
-val x8 = x7._1
-val x10 = x8 > x1
-val x9 = x7._2
-val x11 = x9.defined
-val x12 = !x11
-val x13 = x10 && x12
-val x14 = !x13
-x14}) {
-val x16 = x5
-val x18 = x16._2
-val x19 = x18.defined
-val x36 = if (x19) {
-val x20 = x18.value
-val x21 = x20 > 5
-val x30 = if (x21) {
-val x17 = x16._1
-val x22 = new Tuple2IntOptionInt(x17,x3)
-val x23 = new Tuple2OptionIntTuple2IntOptionInt(x3,x22)
-x23
+var x10: scala.collection.immutable.List[Int] = x2
+val x87 = while ({val x11 = x5
+val x12 = x6
+val x13 = x7
+val x16 = x11 > x1
+val x17 = !x12
+val x18 = x16 && x17
+val x19 = !x18
+x19}) {
+var x21: Boolean = false
+var x22: Int = 0
+val x24 = x5
+val x25 = x6
+val x26 = x7
+var x29: Boolean = false
+var x30: Int = 0
+var x32: Int = 0
+var x33: Boolean = false
+var x34: Int = 0
+x32 = x24
+x33 = x25
+x34 = x26
+val x62 = if (x25) {
+val x39 = x26 > 5
+val x52 = if (x39) {
+x33 = false
+x34 = 0
+()
 } else {
-val x24 = new OptionInt(x20,true)
-val x17 = x16._1
-val x25 = x20 + 1
-val x27 = new OptionInt(x25,true)
-val x28 = new Tuple2IntOptionInt(x17,x27)
-val x29 = new Tuple2OptionIntTuple2IntOptionInt(x24,x28)
-x29
+x29 = true
+x30 = x26
+x33 = true
+val x44 = x26 + 1
+x34 = x44
+()
 }
-x30
+x52
 } else {
-val x17 = x16._1
-val x31 = new OptionInt(x17,true)
-val x32 = x17 + 1
-val x34 = new Tuple2IntOptionInt(x32,x31)
-val x35 = new Tuple2OptionIntTuple2IntOptionInt(x3,x34)
-x35
+x33 = true
+x34 = x24
+val x55 = x24 + 1
+x32 = x55
+()
 }
-val x37 = x36._1
-val x39 = x37.defined
-val x46 = if (x39) {
-val x40 = x6
-val x41 = x37.value
-val x42 = List(x41)
-val x43 = x40 ::: x42
-x6 = x43
+val x63 = x29
+val x64 = x30
+val x66 = x32
+val x67 = x33
+val x68 = x34
+x21 = x63
+x22 = x64
+x5 = x66
+x6 = x67
+x7 = x68
+val x77 = x21
+val x78 = x22
+val x85 = if (x77) {
+val x80 = x10
+val x81 = List(x78)
+val x82 = x80 ::: x81
+x10 = x82
 ()
 } else {
 ()
 }
-val x38 = x36._2
-x5 = x38
-()
+x85
 }
-val x50 = x6
-x50
+val x88 = x10
+x88
 }
 }
 /*****************************************
@@ -432,72 +515,89 @@ List(1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5)
 *******************************************/
 class flatMapRange extends ((Int, Int)=>(scala.collection.immutable.List[Int])) {
 def apply(x0:Int, x1:Int): scala.collection.immutable.List[Int] = {
-val x3 = new OptionTuple2IntInt(null,false)
-val x4 = new Tuple2IntOptionTuple2IntInt(x0,x3)
-var x5: Tuple2IntOptionTuple2IntInt = x4
+var x6: Int = x0
+var x7: Boolean = false
+var x8: Int = 0
+var x9: Int = 0
 val x2 = List()
-var x6: scala.collection.immutable.List[Int] = x2
-val x24 = new OptionInt(0,false)
-val x55 = while ({val x7 = x5
-val x8 = x7._1
-val x10 = x8 > x1
-val x9 = x7._2
-val x11 = x9.defined
-val x12 = !x11
-val x13 = x10 && x12
-val x14 = !x13
-x14}) {
-val x16 = x5
-val x18 = x16._2
-val x19 = x18.defined
-val x42 = if (x19) {
-val x20 = x18.value
-val x21 = x20._1
-val x22 = x20._2
-val x23 = x22 > x21
-val x34 = if (x23) {
-val x17 = x16._1
-val x25 = new Tuple2IntOptionTuple2IntInt(x17,x3)
-val x26 = new Tuple2OptionIntTuple2IntOptionTuple2IntInt(x24,x25)
-x26
+var x13: scala.collection.immutable.List[Int] = x2
+val x106 = while ({val x14 = x6
+val x15 = x7
+val x16 = x8
+val x17 = x9
+val x21 = x14 > x1
+val x22 = !x15
+val x23 = x21 && x22
+val x24 = !x23
+x24}) {
+var x27: Boolean = false
+var x28: Int = 0
+val x30 = x6
+val x31 = x7
+val x32 = x8
+val x33 = x9
+var x37: Boolean = false
+var x38: Int = 0
+var x40: Int = 0
+var x41: Boolean = false
+var x42: Int = 0
+var x43: Int = 0
+x40 = x30
+x41 = x31
+x42 = x32
+x43 = x33
+val x78 = if (x31) {
+val x50 = x33 > x32
+val x66 = if (x50) {
+x41 = false
+x42 = 0
+x43 = 0
+()
 } else {
-val x27 = new OptionInt(x22,true)
-val x17 = x16._1
-val x28 = x22 + 1
-val x30 = new Tuple2IntInt(x21,x28)
-val x31 = new OptionTuple2IntInt(x30,true)
-val x32 = new Tuple2IntOptionTuple2IntInt(x17,x31)
-val x33 = new Tuple2OptionIntTuple2IntOptionTuple2IntInt(x27,x32)
-x33
+x37 = true
+x38 = x33
+x41 = true
+x42 = x32
+val x56 = x33 + 1
+x43 = x56
+()
 }
-x34
+x66
 } else {
-val x17 = x16._1
-val x36 = x17 + 1
-val x38 = new Tuple2IntInt(x17,1)
-val x39 = new OptionTuple2IntInt(x38,true)
-val x40 = new Tuple2IntOptionTuple2IntInt(x36,x39)
-val x41 = new Tuple2OptionIntTuple2IntOptionTuple2IntInt(x24,x40)
-x41
+val x69 = x30 + 1
+x40 = x69
+x41 = true
+x42 = x30
+x43 = 1
+()
 }
-val x43 = x42._1
-val x45 = x43.defined
-val x52 = if (x45) {
-val x46 = x6
-val x47 = x43.value
-val x48 = List(x47)
-val x49 = x46 ::: x48
-x6 = x49
+val x79 = x37
+val x80 = x38
+val x82 = x40
+val x83 = x41
+val x84 = x42
+val x85 = x43
+x27 = x79
+x28 = x80
+x6 = x82
+x7 = x83
+x8 = x84
+x9 = x85
+val x96 = x27
+val x97 = x28
+val x104 = if (x96) {
+val x99 = x13
+val x100 = List(x97)
+val x101 = x99 ::: x100
+x13 = x101
 ()
 } else {
 ()
 }
-val x44 = x42._2
-x5 = x44
-()
+x104
 }
-val x56 = x6
-x56
+val x107 = x13
+x107
 }
 }
 /*****************************************

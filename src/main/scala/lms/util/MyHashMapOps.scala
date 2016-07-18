@@ -25,13 +25,14 @@ trait MyHashMapOps extends Base {
    * implicits for creating Type Manifests
    * new boilerplate after the Manifest -> Typ change
    */
-  implicit def hashMapTyp[K: Typ,V: Typ]: Typ[HashMap[K, V]]
+  implicit def hashMap_typ[K: Typ, V: Typ]: Typ[HashMap[K, V]]
+  implicit def hashMap_nul[K: Typ: Nul, V: Typ: Nul]: Nul[HashMap[K, V]]
 
   object HashMap {
-    def apply[K: Typ, V: Typ]()(implicit pos: SourceContext) = hashmap_new[K, V]()
+    def apply[K: Typ: Nul, V: Typ: Nul]()(implicit pos: SourceContext) = hashmap_new[K, V]()
   }
 
-  implicit class hashmapOpsCls[K: Typ, V: Typ](m: Rep[HashMap[K, V]]) {
+  implicit class hashmapOpsCls[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]]) {
     def apply(k: Rep[K])(implicit pos: SourceContext) = hashmap_apply(m, k)
 
     def +(k: Rep[K], v: Rep[V])(implicit pos: SourceContext) = hashmap_updated(m, k, v)
@@ -44,26 +45,26 @@ trait MyHashMapOps extends Base {
 //    def keys(implicit pos: SourceContext) = hashmap_keys(m)
   }
 
-  def hashmap_new[K: Typ, V: Typ]()(implicit pos: SourceContext): Rep[HashMap[K, V]]
-  def hashmap_apply[K: Typ, V: Typ](m: Rep[HashMap[K, V]], k: Rep[K])
+  def hashmap_new[K: Typ: Nul, V: Typ: Nul]()(implicit pos: SourceContext): Rep[HashMap[K, V]]
+  def hashmap_apply[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]], k: Rep[K])
                                    (implicit pos: SourceContext): Rep[V]
 
-  def hashmap_updated[K: Typ, V: Typ](m: Rep[HashMap[K, V]], k: Rep[K], v: Rep[V])
+  def hashmap_updated[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]], k: Rep[K], v: Rep[V])
                                      (implicit pos: SourceContext): Rep[HashMap[K, V]]
 
-  def hashmap_contains[K: Typ, V: Typ](m: Rep[HashMap[K, V]], i: Rep[K])
+  def hashmap_contains[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]], i: Rep[K])
                                       (implicit pos: SourceContext): Rep[Boolean]
 
-  def hashmap_size[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+  def hashmap_size[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
                                   (implicit pos: SourceContext): Rep[Int]
 
-//  def hashmap_values[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+//  def hashmap_values[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
 //                                    (implicit pos: SourceContext): Rep[Iterable[V]]
 
-//  def hashmap_keyset[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+//  def hashmap_keyset[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
 //                                    (implicit pos: SourceContext): Rep[Set[K]]
 //
-//  def hashmap_keys[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+//  def hashmap_keys[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
 //                                  (implicit pos: SourceContext): Rep[Iterable[K]]
 }
 
@@ -77,69 +78,74 @@ trait MyHashMapOpsExp
    * implicits for creating Type Manifests
    * new boilerplate after the Manifest -> Typ change
    */
-  implicit def hashMapTyp[K: Typ,V: Typ]: Typ[HashMap[K,V]] = {
+  implicit def hashMap_typ[K: Typ, V: Typ]: Typ[HashMap[K,V]] = {
     implicit val ManifestTyp(mK) = typ[K]
     implicit val ManifestTyp(mV) = typ[V]
     manifestTyp
   }
 
-  abstract class HashMapDef[K: Typ, V: Typ, R: Typ] extends Def[R] {
+  implicit def hashMap_nul[K: Typ: Nul, V: Typ: Nul] = new Nul[HashMap[K, V]] {
+    def nullValue = null
+    def nlArguments = nul[K] :: nul[V] :: Nil
+  }
+
+  abstract class HashMapDef[K: Typ: Nul, V: Typ: Nul, R: Typ: Nul] extends Def[R] {
     val mK = manifest[K]
     val mV = manifest[V]
   }
 
-  case class HashMapNew[K: Typ, V: Typ]() extends HashMapDef[K, V, HashMap[K, V]]
-  case class HashMapApply[K: Typ, V: Typ](m: Exp[HashMap[K, V]], k: Exp[K])
+  case class HashMapNew[K: Typ: Nul, V: Typ: Nul]() extends HashMapDef[K, V, HashMap[K, V]]
+  case class HashMapApply[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], k: Exp[K])
     extends HashMapDef[K, V, V]
 
-  case class HashMapUpdate[K: Typ, V: Typ](m: Exp[HashMap[K, V]], k: Exp[K], v: Exp[V])
+  case class HashMapUpdate[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], k: Exp[K], v: Exp[V])
     extends HashMapDef[K, V, Unit]
-  case class HashMapUpdated[K: Typ, V: Typ](m: Exp[HashMap[K, V]], k: Exp[K], v: Exp[V])
+  case class HashMapUpdated[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], k: Exp[K], v: Exp[V])
     extends HashMapDef[K, V, HashMap[K, V]]
 
-  case class HashMapContains[K: Typ, V: Typ](m: Exp[HashMap[K, V]], i: Exp[K])
+  case class HashMapContains[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], i: Exp[K])
     extends HashMapDef[K, V, Boolean]
-  case class HashMapSize[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+  case class HashMapSize[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
     extends HashMapDef[K, V, Int]
-//  case class HashMapValues[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+//  case class HashMapValues[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
 //    extends HashMapDef[K, V, Iterable[V]]
-//  case class HashMapClear[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+//  case class HashMapClear[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
 //    extends HashMapDef[K, V, Unit]
 
-//  case class HashMapKeySet[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+//  case class HashMapKeySet[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
 //    extends HashMapDef[K, V, Set[K]]
-//  case class HashMapKeys[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+//  case class HashMapKeys[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
 //    extends HashMapDef[K, V, Iterable[K]]
 
   /**
    * creating an immutable HashMap so no need to wrap an effect around it
    */
-  def hashmap_new[K: Typ, V: Typ]()(implicit pos: SourceContext) = HashMapNew[K, V]()
-  def hashmap_apply[K: Typ, V: Typ](m: Exp[HashMap[K, V]], k: Exp[K])
+  def hashmap_new[K: Typ: Nul, V: Typ: Nul]()(implicit pos: SourceContext) = HashMapNew[K, V]()
+  def hashmap_apply[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], k: Exp[K])
                                    (implicit pos: SourceContext) =
     HashMapApply(m, k)
 
-  def hashmap_updated[K: Typ, V: Typ](m: Rep[HashMap[K, V]], k: Rep[K], v: Rep[V])
+  def hashmap_updated[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]], k: Rep[K], v: Rep[V])
                                      (implicit pos: SourceContext) =
     HashMapUpdated(m, k, v)
 
-  def hashmap_contains[K: Typ, V: Typ](m: Exp[HashMap[K, V]], i: Exp[K])
+  def hashmap_contains[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]], i: Exp[K])
                                       (implicit pos: SourceContext) =
     HashMapContains(m, i)
 
-  def hashmap_size[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+  def hashmap_size[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
                                   (implicit pos: SourceContext) =
     HashMapSize(m)
 
-//  def hashmap_values[K: Typ, V: Typ](m: Exp[HashMap[K, V]])
+//  def hashmap_values[K: Typ: Nul, V: Typ: Nul](m: Exp[HashMap[K, V]])
 //                                    (implicit pos: SourceContext) =
 //     HashMapValues(m)
 //
-//  def hashmap_keyset[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+//  def hashmap_keyset[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
 //                                    (implicit pos: SourceContext) =
 //    HashMapKeySet(m)
 //
-//  def hashmap_keys[K: Typ, V: Typ](m: Rep[HashMap[K, V]])
+//  def hashmap_keys[K: Typ: Nul, V: Typ: Nul](m: Rep[HashMap[K, V]])
 //                                  (implicit pos: SourceContext) =
 //    HashMapKeys(m)
 

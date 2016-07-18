@@ -101,7 +101,7 @@ trait StreamProg
     val xs = rangeStream(a, unit(5))
     val ys = rangeStream(b, unit(5))
 
-    val dotted = (xs zip ys) map (pair => pair._1 * pair._2)
+    val dotted = (xs zip ys).map(pair => pair.apply((x, y) => x * y))
 
     dotted.toFold.apply[Int](unit(0), (acc, x) => acc + x)
   }
@@ -109,25 +109,12 @@ trait StreamProg
   /**
    * A test to see what happens to `OptionCPS[Rep[Stream]]`
    */
-  def repStream(a: Rep[Int]): Rep[Int] = {
-    val bla: Rep[Stream[Int, Int]] =
-      mkStream(rangeStream(a, unit(10)))
-
-    bla.toFold.apply[Int](unit(0), (acc, x) => acc + x)
-  }
-
-  /**
-   * Let's do a test with conditional over (OptionCPS[A], Int)
-   */
-  def tupleOptionTest(a: Rep[Int]): Rep[Int] = {
-
-    val myValue: Rep[(OptionCPS[Int], Int)] =
-      if (a < unit(3)) (mkSome(a + unit(1)), a)
-      else (mkNone[Int], a + unit(1))
-
-    val res: Rep[(Option[Int], Int)] =  (myValue._1.toOption, myValue._2)
-    myValue._2
-  }
+//  def repStream(a: Rep[Int]): Rep[Int] = {
+//    val bla: Rep[Stream[Int, Int]] =
+//      mkStream(rangeStream(a, unit(10)))
+//
+//    bla.toFold.apply[Int](unit(0), (acc, x) => acc + x)
+//  }
 
   /**
    * flatten over a range
@@ -137,7 +124,7 @@ trait StreamProg
     val flattened = xs.flatten[Int, Int](
       a => a,
       s => s > unit(5),
-      s => make_tuple2(make_opt(Some(s)), s + unit(1))
+      s => mkPair(mkSome(s), s + unit(1))
     )
 
     flattened.toFold.apply[List[Int]](List[Int](), (ls, x) => ls ++ List(x))
@@ -153,7 +140,7 @@ trait StreamProg
   }
 }
 
-trait StreamGen extends UnfoldGen {
+trait StreamGen extends UnfoldGen with PairCPSGenBase {
   val IR: StreamExp
 }
 
@@ -166,8 +153,8 @@ class StreamSuite extends FileDiffSpec {
       new StreamProg
           with StreamExp
           with TupleOpsExp
-          /** this trait should be mixed in higher up */ with ArrayOpsExp
-          /** this trait should be mixed in higher up */ with SeqOpsExp
+          ///** this trait should be mixed in higher up */ with ArrayOpsExp
+          ///** this trait should be mixed in higher up */ with SeqOpsExp
           with MyScalaCompile { self =>
 
         val codegen = new StreamGen with ScalaGenTupleOps { val IR: self.type = self }
@@ -222,6 +209,7 @@ class StreamSuite extends FileDiffSpec {
         codegen.reset
 
         codegen.emitSource2(dotProductRange _, "dotProductRange", new java.io.PrintWriter(System.out))
+        codegen.emitDataStructures(new java.io.PrintWriter(System.out))
         codegen.reset
 
         val testcdotProductRange = compile2(dotProductRange)
@@ -230,20 +218,12 @@ class StreamSuite extends FileDiffSpec {
         scala.Console.println(testcdotProductRange(4, 1))
         codegen.reset
 
-        codegen.emitSource(repStream _, "repStream", new java.io.PrintWriter(System.out))
-        codegen.reset
-
-        val testcRepStream = compile(repStream)
-        scala.Console.println(testcRepStream(1))
-        scala.Console.println(testcRepStream(4))
-        codegen.reset
-
-//        codegen.emitSource(tupleOptionTest _, "tupleOptionTest", new java.io.PrintWriter(System.out))
+//        codegen.emitSource(repStream _, "repStream", new java.io.PrintWriter(System.out))
 //        codegen.reset
 //
-//        val testcTupleOptionTest = compile(tupleOptionTest)
-//        scala.Console.println(testcTupleOptionTest(1))
-//        scala.Console.println(testcTupleOptionTest(4))
+//        val testcRepStream = compile(repStream)
+//        scala.Console.println(testcRepStream(1))
+//        scala.Console.println(testcRepStream(4))
 //        codegen.reset
 
         codegen.emitSource2(flattenRange _, "flattenRange", new java.io.PrintWriter(System.out))

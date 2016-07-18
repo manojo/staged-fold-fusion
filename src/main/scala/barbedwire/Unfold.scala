@@ -11,14 +11,15 @@ import lms.util._
 trait Unfolds
     extends FoldLefts
     with OptionOps
-    with OptionCPS
-    with ZeroVal {
+    with OptionCPS {
+    // with ZeroVal {
 
 
-  abstract class Iterator[A: Typ] { self =>
+  abstract class Iterator[A: Typ: Nul] { self =>
 
     type Source
-    implicit def sourceTyp: Typ[Source]
+    implicit def source_typ: Typ[Source]
+    implicit def source_nul: Nul[Source]
 
     def source: Rep[Source]
 
@@ -26,7 +27,7 @@ trait Unfolds
     def next(s: Rep[Source]): Rep[(A, Source)]
 
     def toFold: FoldLeft[A] = new FoldLeft[A] {
-      def apply[Sink: Typ](z: Rep[Sink], comb: Comb[A, Sink]): Rep[Sink] = {
+      def apply[Sink: Typ: Nul](z: Rep[Sink], comb: Comb[A, Sink]): Rep[Sink] = {
 
         var tmpSource = source
         var tmpSink = z
@@ -41,9 +42,10 @@ trait Unfolds
       }
     }
 
-    def map[B: Typ](f: Rep[A] => Rep[B]) = new Iterator[B] {
+    def map[B: Typ: Nul](f: Rep[A] => Rep[B]) = new Iterator[B] {
       type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+      implicit def source_typ = self.source_typ
+      implicit def source_nul = self.source_nul
 
       def source = self.source
 
@@ -60,7 +62,8 @@ trait Unfolds
      */
     def filter(p: Rep[A] => Rep[Boolean]) = new Iterator[Option[A]] {
       type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+      implicit def source_typ = self.source_typ
+      implicit def source_nul = self.source_nul
 
       def source = self.source
       def atEnd(s: Rep[Source]): Rep[Boolean] = self.atEnd(s)
@@ -79,10 +82,11 @@ trait Unfolds
      */
     def filter2(p: Rep[A] => Rep[Boolean]): Iterator[A] = new Iterator[A] {
       type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+      implicit def source_typ = self.source_typ
+      implicit def source_nul = self.source_nul
 
-      var hd = unit(zeroVal[A])
-      var curTail = unit(zeroVal[Source])
+      var hd = zeroVal[A]
+      var curTail = zeroVal[Source]
 
       def source = self.source
 
@@ -115,7 +119,7 @@ trait Unfolds
        * But looks like the implementation in the standard library
        */
       def next(s: Rep[Source]): Rep[(A, Source)] =
-        if (atEnd(s)) unit(zeroVal[(A, Source)])
+        if (atEnd(s)) zeroVal[(A, Source)]
         else make_tuple2(readVar(hd), readVar(curTail))
     }
 
@@ -124,12 +128,16 @@ trait Unfolds
      */
     def filterCPS(p: Rep[A] => Rep[Boolean]) = new Iterator[OptionCPS[A]] {
       type Source = self.Source
-      implicit def sourceTyp = self.sourceTyp
+      implicit def source_typ = self.source_typ
+      implicit def source_nul = self.source_nul
+
       def source = self.source
       def atEnd(s: Rep[Source]): Rep[Boolean] = self.atEnd(s)
       def next(s: Rep[Source]): Rep[(OptionCPS[A], Source)] = {
+
         val nextAndRest = self.next(s)
         val opt = if (p(nextAndRest._1)) mkSome(nextAndRest._1) else mkNone[A]
+
         make_tuple2(opt, nextAndRest._2)
       }
     }
@@ -138,10 +146,12 @@ trait Unfolds
   /**
    * iterates over a list
    */
-  def listIterator[T: Typ](ls: Rep[List[T]]) = new Iterator[T] {
+  def listIterator[T: Typ: Nul](ls: Rep[List[T]]) = new Iterator[T] {
 
     type Source = List[T]
-    def sourceTyp: Typ[List[T]] = listTyp[T]
+    val source_typ: Typ[List[T]] = listTyp[T]
+    val source_nul: Nul[List[T]] = listNul[T]
+
     def source = ls
 
     def atEnd(ts: Rep[List[T]]) = ts.isEmpty
@@ -154,11 +164,13 @@ trait Unfolds
    */
   def rangeIterator(a: Rep[Int], b: Rep[Int]) = new Iterator[Int] {
     type Source = Int
-    def sourceTyp = intTyp
+    val source_typ = intTyp
+    val source_nul = intNul
+
     def source = a
 
     def atEnd(n: Rep[Int]): Rep[Boolean] = n > b
-    def next(n: Rep[Int]) = make_tuple2(n, n + 1)
+    def next(n: Rep[Int]) = make_tuple2(n, n + unit(1))
 
   }
 
@@ -169,7 +181,8 @@ trait Unfolds
  * The corresponding codegen trait as well
  */
 trait UnfoldExp
-  extends FoldLeftExp
+  extends Unfolds
+  with FoldLeftExp
   with EqualExpOpt
   with StringOpsExp
   with OptionOpsExp
